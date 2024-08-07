@@ -4,7 +4,7 @@
     <div class="container">
         <div class="col-md-12">
             <div>
-                <h1 class="my-4">Katalog Barang</h1>
+                <h1 class="my-4">Laporan Keuangan</h1>
             </div>
             <div class="card">
                 <div class="card-header">
