@@ -558,6 +558,15 @@
     <script src="{{ asset('assets/js/setting-demo.js') }}"></script>
     <script src="{{ asset('assets/js/demo.js') }}"></script>
     <script>
+        $("#lineChart11").sparkline([102, 109, 120, 99, 110, 105, 115], {
+            type: "line",
+            height: "70",
+            width: "100%",
+            lineWidth: "2",
+            lineColor: "#177dff",
+            fillColor: "rgba(23, 125, 255, 0.14)",
+        });
+
         $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
             type: "line",
             height: "70",
@@ -576,13 +585,24 @@
             fillColor: "rgba(243, 84, 93, .14)",
         });
 
-        $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+        $("#lineChart33").sparkline([105, 103, 123, 100, 95, 105, 115], {
             type: "line",
             height: "70",
             width: "100%",
             lineWidth: "2",
             lineColor: "#ffa534",
             fillColor: "rgba(255, 165, 52, .14)",
+        });
+        $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+            type: "line",
+            height: "70",
+            width: "100%",
+            lineWidth: "2",
+            lineColor: "#6cbf6c",
+            fillColor: "rgba(255, 165, 52, .14)",
+            // lineColor: "rgba(255, 255, 255, .5)",
+            //     fillColor: "rgba(255, 255, 255, .15)",
+
         });
     </script>
 </body>
