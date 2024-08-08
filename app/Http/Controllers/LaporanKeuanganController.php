@@ -11,7 +11,8 @@ class LaporanKeuanganController extends Controller
      */
     public function index()
     {
-        //
+        //return view index
+        return view('laporan-keuangan');
     }
 
     /**

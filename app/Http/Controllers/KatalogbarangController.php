@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Katalogbarang;
 use Illuminate\Http\Request;
 
 class KatalogbarangController extends Controller
 {
     //index
     public function index() {
-        return view('katalog-barang');
+        $katalogBarang = Katalogbarang::getAllData();
+
+        return view('katalog-barang', compact('katalogBarang'));
+    }
+
+    public function create() {
+
     }
 }
