@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Katalogbarang extends Model
 {
@@ -20,5 +21,15 @@ class Katalogbarang extends Model
     public static function getDataById($id)
     {
         return self::find($id);
+    }
+
+    public function barangMasuk()
+    {
+        return $this->hasMany(BarangMasuk::class, 'katalog_barang_id');
+    }
+
+    public function barangTerjual()
+    {
+        return $this->hasMany(BarangTerjual::class, 'katalog_barang_id');
     }
 }

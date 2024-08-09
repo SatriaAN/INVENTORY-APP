@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LaporanKeuangan;
 use Illuminate\Http\Request;
 
 class LaporanKeuanganController extends Controller
@@ -11,8 +12,10 @@ class LaporanKeuanganController extends Controller
      */
     public function index()
     {
-        //return view index
-        return view('laporan-keuangan');
+        $laporanKeuangan = LaporanKeuangan::getAllData();
+
+        //return view index dengan compact
+        return view('laporan-keuangan', compact('laporanKeuangan'));
     }
 
     /**

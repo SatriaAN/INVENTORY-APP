@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BarangTerjual;
 use Illuminate\Http\Request;
 
 class BarangTerjualController extends Controller
@@ -11,7 +12,9 @@ class BarangTerjualController extends Controller
      */
     public function index()
     {
-        return view('barang-terjual');
+        $barangTerjual = BarangTerjual::with('katalogBarang')->get();
+
+        return view('barang-terjual', compact('barangTerjual'));
     }
 
     /**
