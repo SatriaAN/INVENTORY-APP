@@ -83,9 +83,9 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $data->nama_barang }}</td>
-                                        <td>Rp.{{ $data->harga_beli }}</td>
-                                        <td>Rp.{{ $data->harga_satuan }}</td>
-                                        <td>Rp.{{ $data->harga_jual }}</td>
+                                        <td>Rp. {{ number_format($data->harga_beli, 0, ',', '.') }}</td>
+                                        <td>Rp. {{ number_format($data->harga_satuan, 0, ',', '.') }}</td>
+                                        <td>Rp. {{ number_format($data->harga_jual, 0, ',', '.') }}</td>
                                         <td>
                                             <form action="POST" class="d-flex">
                                                 <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a>
