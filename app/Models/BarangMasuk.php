@@ -24,4 +24,8 @@ class BarangMasuk extends Model
     public function katalogBarang(){
         return $this->belongsTo(Katalogbarang::class, 'katalog_barang_id');
     }
+
+    // public function stokMasukKatalogBarang(){
+    //     return $this->hasMany(Katalogbarang::class, 'katalog_barang_id');
+    // }
 }

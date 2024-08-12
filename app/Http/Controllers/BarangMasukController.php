@@ -13,6 +13,7 @@ class BarangMasukController extends Controller
     public function index()
     {
         $barangMasuk = BarangMasuk::with('katalogBarang')->get();
+        // $barangMasuk = BarangMasuk::with('stokMasukKatalogBarang')->get();
 
         return view('barang-masuk.index', compact('barangMasuk'));
     }

@@ -32,4 +32,14 @@ class Katalogbarang extends Model
     {
         return $this->hasMany(BarangTerjual::class, 'katalog_barang_id');
     }
+
+    // public function stokMasuk()
+    // {
+    //     return $this->belongsTo(BarangMasuk::class, 'katalog_barang_id');
+    // }
+
+    // public function terjual()
+    // {
+    //     return $this->belongsTo(BarangMasuk::class, 'katalog_barang_id');
+    // }
 }

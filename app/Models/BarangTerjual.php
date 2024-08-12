@@ -15,4 +15,9 @@ class BarangTerjual extends Model
     {
         return $this->belongsTo(Katalogbarang::class, 'katalog_barang_id');
     }
+
+    // public function terjualKatalogBarang()
+    // {
+    //     return $this->hasMany(Katalogbarang::class, 'katalog_barang_id');
+    // }
 }

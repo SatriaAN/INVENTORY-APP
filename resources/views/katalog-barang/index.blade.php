@@ -49,15 +49,15 @@
                                     <th>Harga Beli</th>
                                     <th>Harga Satuan</th>
                                     <th>Harga Jual</th>
-                                    <th>Actions</th>
-                                    {{-- <th>Stok Awal</th>
+                                    <th>Stok Awal</th>
                                     <th>Stok Masuk</th>
                                     <th>Terjual</th>
                                     <th>Stok Akhir</th>
                                     <th>Kas Masuk</th>
                                     <th>Profit</th>
                                     <th>Tanggal Dibuat</th>
-                                    <th>Tanggal Diupdate</th> --}}
+                                    <th>Tanggal Diupdate</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -67,15 +67,15 @@
                                     <th>Harga Beli</th>
                                     <th>Harga Satuan</th>
                                     <th>Harga Jual</th>
-                                    <th>Actions</th>
-                                    {{-- <th>Stok Awal</th>
+                                    <th>Stok Awal</th>
                                     <th>Stok Masuk</th>
                                     <th>Terjual</th>
                                     <th>Stok Akhir</th>
                                     <th>Kas Masuk</th>
                                     <th>Profit</th>
                                     <th>Tanggal Dibuat</th>
-                                    <th>Tanggal Diupdate</th> --}}
+                                    <th>Tanggal Diupdate</th>
+                                    <th>Actions</th>
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -83,9 +83,17 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $data->nama_barang }}</td>
-                                        <td>Rp. {{ number_format($data->harga_beli, 0, ',', '.') }}</td>
-                                        <td>Rp. {{ number_format($data->harga_satuan, 0, ',', '.') }}</td>
-                                        <td>Rp. {{ number_format($data->harga_jual, 0, ',', '.') }}</td>
+                                        <td>Rp.{{ number_format($data->harga_beli, 0, ',', '.') }}</td>
+                                        <td>Rp.{{ number_format($data->harga_satuan, 0, ',', '.') }}</td>
+                                        <td>Rp.{{ number_format($data->harga_jual, 0, ',', '.') }}</td>
+                                        <td>{{ $data->stok_awal }}</td>
+                                        <td>{{ $data->stok_masuk }}</td>
+                                        <td>{{ $data->terjual }}</td>
+                                        <td>{{ $data->stok_akhir }}</td>
+                                        <td>Rp.{{ $data->kas_masuk }}</td>
+                                        <td>Rp.{{ $data->profit }}</td>
+                                        <td>{{ $data->created_at }}</td>
+                                        <td>{{ $data->updated_at }}</td>
                                         <td>
                                             <form action="POST" class="d-flex">
                                                 <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a>
@@ -95,14 +103,6 @@
                                                         class="icon-pencil"></i></a>
                                             </form>
                                         </td>
-                                        {{-- <td>{{ $data->stok_awal }}</td>
-                                        <td>{{ $data->stok_masuk }}</td>
-                                        <td>{{ $data->terjual }}</td>
-                                        <td>{{ $data->stok_akhir }}</td>
-                                        <td>Rp.{{ $data->kas_masuk }}</td>
-                                        <td>Rp.{{ $data->profit }}</td>
-                                        <td>Rp.{{ $data->created_at }}</td>
-                                        <td>Rp.{{ $data->updated_at }}</td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>
