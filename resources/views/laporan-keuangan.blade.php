@@ -57,16 +57,17 @@
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $data->jumlah_beli }}</td>
                                         <td>{{ $data->satuan }}</td>
-                                        <td>{{ $data->harga_barang }}</td>
-                                        <td>{{ $data->harga_ongkir }}</td>
-                                        <td>{{ $data->kerdit }}</td>
-                                        <td>{{ $data->debet }}</td>
-                                        <td>{{ $data->sisa_saldo }}</td>
-                                        <td>{{ $data->total_keseluruhan }}</td>
-                                        <td>{{ $data->total_bayar }}</td>
-                                        <td>{{ $data->total_diskon }}</td>
-                                        <td>{{ $data->created_at }}</td>
-                                        <td>{{ $data->updated_at }}</td>
+                                        <td>{{ $data->nama_barang }}</td>
+                                        <td>Rp. {{ number_format ($data->harga_satuan, 0, ',','.') }}</td>
+                                        <td>Rp. {{ number_format ($data->harga_ongkir, 0, ',','.') }}</td>
+                                        <td>Rp. {{ number_format ($data->kredit, 0, ',','.') }}</td>
+                                        <td>Rp. {{ number_format ($data->debet, 0, ',','.') }}</td>
+                                        <td>Rp. {{ number_format ($data->sisa_saldo, 0, ',','.') }}</td>
+                                        <td>Rp. {{ number_format ($data->total_keseluruhan, 0, ',','.') }}</td>
+                                        <td>Rp. {{ number_format ($data->total_bayar, 0, ',','.') }}</td>
+                                        <td>Rp. {{ number_format ($data->total_diskon, 0, ',','.') }}</td>
+                                        <td>{{ $data->created_at->format('d-m-Y') }}</td>
+                                        <td>{{ $data->updated_at->format('d-m-Y') }}</td>
                                         <td>
                                             <form action="POST" class="d-flex">
                                                 <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a>
