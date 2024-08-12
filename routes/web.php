@@ -5,6 +5,7 @@ use App\Http\Controllers\BarangTerjualController;
 use App\Http\Controllers\KatalogbarangController;
 use App\Http\Controllers\LaporanKeuanganController;
 use App\Http\Controllers\ProfileController;
+use App\Models\BarangTerjual;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,11 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/katalog', [KatalogbarangController::class, 'index'])->name('katalog-barang');
-
-    Route::get('/barang-masuk', [BarangMasukController::class, 'index'])->name('barang-masuk');
-    Route::get('/barang-terjual', [BarangTerjualController::class, 'index'])->name('barang-terjual');
-    Route::get('/laporan-keuangan', [LaporanKeuanganController::class, 'index'])->name('laporan-keuangan');
+    Route::resource('katalog', KatalogbarangController::class);
+    Route::resource('barang-masuk', BarangMasukController::class);
+    Route::resource('barang-terjual', BarangTerjualController::class);
+    Route::resource('laporan-keuangan', LaporanKeuanganController::class);
 });
 
 require __DIR__.'/auth.php';

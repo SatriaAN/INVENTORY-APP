@@ -10,9 +10,9 @@
                 <div class="col-6">
                     <div class="card">
                         <div class="card-body pb-0">
-                            <div class="h1 fw-bold float-end text-success">+7%</div>
-                            <h2 class="mb-2">213</h2>
-                            <p class="text-muted">Barang Terjual</p>
+                            <div class="h1 fw-bold float-end text-success">{{ count($terjual) }}</div>
+                            <h2 class="mb-5">Barang Terjual</h2>
+                            {{-- <p class="text-muted"></p> --}}
                             <div class="pull-in sparkline-fix">
                                 <div id="lineChart3"></div>
                             </div>
@@ -23,10 +23,10 @@
                     <div class="card">
                         <div class="card-body pb-0">
                             <div class="h1 fw-bold float-end text-primary">
-                                +5%
+                                {{ count($stokMasuk) }}
                             </div>
-                            <h2 class="mb-2">17</h2>
-                            <p class="text-muted">Barang Masuk</p>
+                            <h2 class="mb-5">Barang Masuk</h2>
+                            {{-- <p class="text-muted">Barang Masuk</p> --}}
                             <div class="pull-in sparkline-fix">
                                 <div id="lineChart"></div>
                             </div>
@@ -112,4 +112,28 @@
             </div>
         </div>
     </div>
+    {{-- <script>
+        // Data dari server yang sudah di-passing ke view
+        var barangMasukData = @json($stokMasuk);
+        var barangTerjualData = @json($terjual);
+
+        // Mengganti data statis dengan data dinamis dari database
+        $("#lineChart").sparkline(barangMasukData, {
+            type: "line",
+            height: "70",
+            width: "100%",
+            lineWidth: "2",
+            lineColor: "#177dff",
+            fillColor: "rgba(23, 125, 255, 0.14)",
+        });
+
+        $("#lineChart3").sparkline(barangTerjualData, {
+            type: "line",
+            height: "70",
+            width: "100%",
+            lineWidth: "2",
+            lineColor: "#6cbf6c",
+            fillColor: "rgba(255, 165, 52, .14)",
+        });
+    </script> --}}
 @endsection

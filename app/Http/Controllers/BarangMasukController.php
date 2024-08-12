@@ -14,7 +14,7 @@ class BarangMasukController extends Controller
     {
         $barangMasuk = BarangMasuk::with('katalogBarang')->get();
 
-        return view('barang-masuk', compact('barangMasuk'));
+        return view('barang-masuk.index', compact('barangMasuk'));
     }
 
     /**
