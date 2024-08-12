@@ -15,7 +15,7 @@ class LaporanKeuanganController extends Controller
         $laporanKeuangan = LaporanKeuangan::getAllData();
 
         //return view index dengan compact
-        return view('laporan-keuangan', compact('laporanKeuangan'));
+        return view('laporan-keuangan.index', compact('laporanKeuangan'));
     }
 
     /**

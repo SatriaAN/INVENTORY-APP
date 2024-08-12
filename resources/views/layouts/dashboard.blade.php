@@ -96,26 +96,26 @@
                             </span>
                             <h4 class="text-section">Data Barang</h4>
                         </li>
-                        <li class="nav-item {{ request()->routeIs('katalog-barang') ? 'active' : '' }}">
-                            <a href="{{ route('katalog-barang') }}" class="" aria-expanded="false">
+                        <li class="nav-item {{ request()->is('katalog') ? 'active' : '' }}">
+                            <a href="{{ url('katalog') }}" class="" aria-expanded="false">
                                 <i class="fas fa-layer-group"></i>
                                 <p>Katalog Barang</p>
                             </a>
                         </li>
-                        <li class="nav-item {{ request()->routeIs('barang-masuk') ? 'active' : '' }}">
-                            <a href="{{ route('barang-masuk') }}" class="" aria-expanded="false">
+                        <li class="nav-item {{ request()->is('barang-masuk') ? 'active' : '' }}">
+                            <a href="{{ url('barang-masuk') }}" class="" aria-expanded="false">
                                 <i class="fas fa-table"></i>
                                 <p>Barang Masuk</p>
                             </a>
                         </li>
-                        <li class="nav-item {{ request()->routeIs('barang-terjual') ? 'active' : '' }}">
-                            <a href="{{ route('barang-terjual') }}" class="" aria-expanded="false">
+                        <li class="nav-item {{ request()->is('barang-terjual') ? 'active' : '' }}">
+                            <a href="{{ url('barang-terjual') }}" class="" aria-expanded="false">
                                 <i class="fas fa-table"></i>
                                 <p>Barang Terjual</p>
                             </a>
                         </li>
-                        <li class="nav-item {{ request()->routeIs('laporan-keuangan') ? 'active' : '' }}">
-                            <a href="{{ route('laporan-keuangan') }}" class="" aria-expanded="false">
+                        <li class="nav-item {{ request()->is('laporan-keuangan') ? 'active' : '' }}">
+                            <a href="{{ url('laporan-keuangan') }}" class="" aria-expanded="false">
                                 <i class="fas fa-file-alt"></i>
                                 <p>Laporan Keuangan</p>
                             </a>
