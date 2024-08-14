@@ -31,7 +31,8 @@
                                                 <td>{{ $data->stok_masuk }}</td>
                                                 {{-- <td>{{ $data->tanggal }}</td> --}}
                                                 <td>
-                                                    <a href="" class="btn btn-info mx-1" style="font-size: 16px;">
+                                                    <a href="{{ url('barang-masuk/detail') }}" class="btn btn-info mx-1"
+                                                        style="font-size: 16px;">
                                                         <i class="icon-eye" style="font-size: 16px;"></i> Detail Data
                                                     </a>
                                                 </td>
