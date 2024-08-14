@@ -13,9 +13,9 @@ class BarangTerjualController extends Controller
     public function index()
     {
         $barangTerjual = BarangTerjual::with('katalogBarang')->get();
-        // $barangTerjual = BarangTerjual::with('stokMasukKatalogBarang')->get();
+        $barangTerjualGroupBy = BarangTerjual::getBarangTerjualByGroup();
 
-        return view('barang-terjual.index', compact('barangTerjual'));
+        return view('barang-terjual.index', compact('barangTerjual', 'barangTerjualGroupBy'));
     }
 
     /**
