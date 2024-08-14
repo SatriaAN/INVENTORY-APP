@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('barang-masuk', BarangMasukController::class);
 
     Route::resource('barang-terjual', BarangTerjualController::class);
-    Route::get('barang-terjual/{katalog_barang_id}/detail', [BarangTerjualController::class, 'showDetail'])->name('barang-terjual.detail');
+    Route::get('/detail-barang-terjual/{katalog_barang_id}/', [BarangTerjualController::class, 'showDetail'])->name('barang-terjual.detail');
 
     Route::resource('laporan-keuangan', LaporanKeuanganController::class);
 });

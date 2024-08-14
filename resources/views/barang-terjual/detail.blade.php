@@ -1,4 +1,5 @@
 @extends('layouts.dashboard')
+<script src="{{ asset('assets/js/plugin/webfont/webfont.min.js') }}"></script>
 
 @section('content')
     <div class="container">

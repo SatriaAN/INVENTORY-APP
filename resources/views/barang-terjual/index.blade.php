@@ -30,7 +30,8 @@
                                                 <td>{{ $data->katalogBarang->nama_barang }}</td>
                                                 <td> {{ $data->total_jumlah_terjual }}</td>
                                                 <td>
-                                                    <a href="{{ route('barang-terjual.detail', $data->katalog_barang_id ) }}" class="btn btn-info mx-1" style="font-size: 16px;">
+                                                    <a href="{{ route('barang-terjual.detail', $data->katalog_barang_id) }}"
+                                                        class="btn btn-info mx-1" style="font-size: 16px;">
                                                         <i class="icon-eye" style="font-size: 16px;"></i> Detail Data
                                                     </a>
                                                 </td>
