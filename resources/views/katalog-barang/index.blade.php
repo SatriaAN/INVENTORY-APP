@@ -90,8 +90,8 @@
                                         <td>{{ $data->stok_masuk }}</td>
                                         <td>{{ $data->terjual }}</td>
                                         <td>{{ $data->stok_akhir }}</td>
-                                        <td>Rp.{{ $data->kas_masuk }}</td>
-                                        <td>Rp.{{ $data->profit }}</td>
+                                        <td>Rp.{{ number_format ($data->kas_masuk, 0, ',','.') }}</td>
+                                        <td>Rp.{{ number_format ($data->profit,0,',','.') }}</td>
                                         <td>{{ $data->created_at }}</td>
                                         <td>{{ $data->updated_at }}</td>
                                         <td>
