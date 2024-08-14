@@ -25,8 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('katalog', KatalogbarangController::class);
     Route::resource('barang-masuk', BarangMasukController::class);
+    Route::get('/barang-masuk/detail', [BarangMasukController::class, 'show']);
+
+    Route::resource('katalog', KatalogbarangController::class);
     Route::resource('barang-terjual', BarangTerjualController::class);
     Route::resource('laporan-keuangan', LaporanKeuanganController::class);
 });
