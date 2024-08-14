@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BarangMasuk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BarangMasukController extends Controller
 {
@@ -14,8 +15,15 @@ class BarangMasukController extends Controller
     {
         $barangMasuk = BarangMasuk::with('katalogBarang')->get();
         $barangMasukGroupBy = BarangMasuk::getBarangMasukByGroup();
+        
+        // Logic Query Bisa dari controller atau model, contoh dari controller
 
-        return view('barang-masuk.index', compact('barangMasuk','barangMasukGroupBy'));
+        // $barangMasukGroupBy = BarangMasuk::select('katalog_barang_id', DB::raw('SUM(stok_masuk) as total_stok_masuk'))
+        //     ->groupBy('katalog_barang_id')
+        //     ->with('katalogBarang')
+        //     ->get();
+
+        return view('barang-masuk.index', compact('barangMasuk', 'barangMasukGroupBy'));
     }
 
     /**
