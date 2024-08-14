@@ -18,6 +18,16 @@ class BarangTerjualController extends Controller
         return view('barang-terjual.index', compact('barangTerjual', 'barangTerjualGroupBy'));
     }
 
+    public function showDetail($katalog_barang_id)
+    {
+
+
+        $detailBarangTerjual = BarangTerjual::getDetailBarangTerjual($katalog_barang_id);
+        $namaBarang = $detailBarangTerjual->first()->katalogBarang->nama_barang ?? 'Data Tidak Ditemukan';
+
+        return view('barang-terjual.detail', compact('detailBarangTerjual', 'namaBarang'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

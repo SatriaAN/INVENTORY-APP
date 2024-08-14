@@ -34,4 +34,12 @@ class BarangTerjual extends Model
             ->with('katalogBarang')
             ->get();
     }
+
+    public static function getDetailBarangTerjual($katalog_barang_id)
+    {
+        return self::where('katalog_barang_id', $katalog_barang_id)
+            ->with('katalogBarang')
+            // ->get(['id', 'jumlah_terjual', 'created_at', 'updated_at']);
+            ->get();
+    }
 }
