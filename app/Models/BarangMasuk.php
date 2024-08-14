@@ -22,7 +22,8 @@ class BarangMasuk extends Model
         return self::find($id);
     }
 
-    public function katalogBarang(){
+    public function katalogBarang()
+    {
         return $this->belongsTo(Katalogbarang::class, 'katalog_barang_id');
     }
 
@@ -33,5 +34,12 @@ class BarangMasuk extends Model
         ->selectRaw('a.nama_barang, SUM(b.stok_masuk) AS stok_masuk')
         ->groupBy('a.nama_barang')
         ->get();
+
+        //contoh query dari model
+        
+        // return self::select('katalog_barang_id', DB::raw('SUM(stok_masuk) as total_stok_masuk'))
+        //     ->groupBy('katalog_barang_id')
+        //     ->with('katalogBarang')
+        //     ->get();
     }
 }
