@@ -32,23 +32,16 @@
                                 </tr>
                             </tfoot>
                             <tbody>
-                                {{-- @foreach ($barangTerjual as $key => $data)
-                                <tr>
-                                    <td>{{ $key + 1 }}</td>
-                                    <td>{{ $data->katalogBarang->nama_barang }}</td>
-                                    <td>{{ $data->jumlah_terjual }}</td>
-                                    <td>{{ $data->keterangan }}</td>
-                                    <td>
-                                        <form action="POST" class="d-flex">
-                                            <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a>
-                                            <button type="submit" class="btn btn-danger mx-1"><i
-                                                    class="icon-trash"></i></button>
-                                            <a href="" class="btn btn-warning mx-1"><i
-                                                    class="icon-pencil"></i></a>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach --}}
+                                @foreach ($detailBarangMasuk as $key => $data)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $data->katalogBarang->nama_barang }}</td>
+                                        <td>{{ $data->stok_masuk }}</td>
+                                        <td>{{ $data->keterangan }}</td>
+                                        <td>{{ $data->created_at }}</td>
+                                        <td>{{ $data->updated_at }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

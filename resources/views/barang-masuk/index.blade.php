@@ -4,7 +4,7 @@
     <div class="container">
         <div class="col-md-12">
             <div>
-                <h1 class="my-4">Barang Masuk</h1>
+                {{ !empty($namaBarang) ? $namaBarang . ' Barang Masuk' : $namaBarang . 'Barang Kosong' }}
             </div>
             <div class="row">
                 <div class="col-6">
@@ -27,12 +27,11 @@
                                         @foreach ($barangMasukGroupBy as $key => $data)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $data->nama_barang }}</td>
+                                                <td>{{ $data->katalogBarang->nama_barang }}</td>
                                                 <td>{{ $data->stok_masuk }}</td>
-                                                {{-- <td>{{ $data->tanggal }}</td> --}}
                                                 <td>
-                                                    <a href="{{ url('barang-masuk/detail') }}" class="btn btn-info mx-1"
-                                                        style="font-size: 16px;">
+                                                    <a href="{{ route('barang-masuk.detail', $data->katalog_barang_id) }}"
+                                                        class="btn btn-info mx-1" style="font-size: 16px;">
                                                         <i class="icon-eye" style="font-size: 16px;"></i> Detail Data
                                                     </a>
                                                 </td>

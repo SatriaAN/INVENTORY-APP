@@ -5,6 +5,7 @@ use App\Http\Controllers\BarangTerjualController;
 use App\Http\Controllers\KatalogbarangController;
 use App\Http\Controllers\LaporanKeuanganController;
 use App\Http\Controllers\ProfileController;
+use App\Models\BarangMasuk;
 use App\Models\BarangTerjual;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('katalog', KatalogbarangController::class);
 
     Route::resource('barang-masuk', BarangMasukController::class);
+    Route::get('/detail-barang-masuk/{katalog_barang_id}/', [BarangMasukController::class, 'showDetail'])->name('barang-masuk.detail');
 
     Route::resource('barang-terjual', BarangTerjualController::class);
     Route::get('/detail-barang-terjual/{katalog_barang_id}/', [BarangTerjualController::class, 'showDetail'])->name('barang-terjual.detail');

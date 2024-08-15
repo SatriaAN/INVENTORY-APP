@@ -15,7 +15,7 @@ class BarangMasukController extends Controller
     {
         $barangMasuk = BarangMasuk::with('katalogBarang')->get();
         $barangMasukGroupBy = BarangMasuk::getBarangMasukByGroup();
-        
+
         // Logic Query Bisa dari controller atau model, contoh dari controller
 
         // $barangMasukGroupBy = BarangMasuk::select('katalog_barang_id', DB::raw('SUM(stok_masuk) as total_stok_masuk'))
@@ -45,11 +45,19 @@ class BarangMasukController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function showDetail($katalog_barang_id)
     {
         //
+        $detailBarangMasuk = BarangMasuk::getDetailBarangMasuk($katalog_barang_id);
+        $namaBarang = $detailBarangMasuk->first()->katalogBarang->nama_barang;
 
-        return view('barang-masuk.detail');
+
+        return view('barang-masuk.detail',compact('detailBarangMasuk','namaBarang'));
+    }
+
+    public function show($id)
+    {
+
     }
 
     /**
