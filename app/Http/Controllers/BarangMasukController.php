@@ -41,27 +41,27 @@ class BarangMasukController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'katalog_barang_id' => 'required|integer',
-            'stok_masuk' => 'required|integer',
-            'keterangan' => 'string',
-        ]);
+        public function store(Request $request)
+        {
+            $validated = $request->validate([
+                'katalog_barang_id' => 'required|integer',
+                'stok_masuk' => 'required|integer',
+                'keterangan' => 'string',
+            ]);
 
-        try {
-            $barangMasuk = BarangMasuk::create($validated);
+            try {
+                $barangMasuk = BarangMasuk::create($validated);
 
-            if (!$barangMasuk) {
-                throw new \Exception('Gagal membuat data barang masuk.');
+                if (!$barangMasuk) {
+                    throw new \Exception('Gagal membuat data barang masuk.');
+                }
+
+                return response()->json(['success' => 'Data berhasil ditambahkan']);
+            } catch (\Exception $e) {
+                Log::error('Error storing barang masuk: ' . $e->getMessage());
+                return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
             }
-
-            return response()->json(['success' => 'Data berhasil ditambahkan']);
-        } catch (\Exception $e) {
-            Log::error('Error storing barang masuk: ' . $e->getMessage());
-            return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
-    }
 
     /**
      * Display the specified resource.

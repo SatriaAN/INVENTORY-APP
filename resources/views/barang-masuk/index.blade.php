@@ -281,14 +281,13 @@
                     let stokMasuk = $("#stok-masuk").val();
                     let keterangan = $("#keterangank").val();
 
-                    // Debugging data sebelum mengirim request
-                    console.log({
-                        katalog_barang_id: katalogBarangId,
-                        stok_masuk: stokMasuk,
-                        keterangan: keterangan
-                    });
+                    // console.log({
+                    //     katalog_barang_id: katalogBarangId,
+                    //     stok_masuk: stokMasuk,
+                    //     keterangan: keterangan
+                    // });
 
-                    // Kirim data ke server melalui AJAX
+                    // Mengirim data ke server pake AJAX
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('barang-masuk.store') }}',
@@ -300,6 +299,7 @@
                         },
                         success: function(response) {
                             swal("Sukses!", "Data telah ditambahkan!", "success");
+                            // nunggu 2 detik setelah berhasil insert data baru
                             setTimeout(function() {
                                 location.reload();
                             }, 2000);
