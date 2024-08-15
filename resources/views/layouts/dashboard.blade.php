@@ -84,7 +84,8 @@
                                 <p>Katalog Barang</p>
                             </a>
                         </li>
-                        <li class="nav-item {{ request()->is('barang-masuk') ? 'active' : '' }}">
+                        <li
+                            class="nav-item {{ request()->is('barang-masuk') || request()->is('detail-barang-masuk/*') ? 'active' : '' }}">
                             <a href="{{ url('barang-masuk') }}" class="" aria-expanded="false">
                                 <i class="fas fa-table"></i>
                                 <p>Barang Masuk</p>
@@ -114,8 +115,8 @@
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
                         <a href="index.html" class="logo">
-                            <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand"
-                                height="20" />
+                            <img src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}" alt="navbar brand"
+                                class="navbar-brand" height="20" />
                         </a>
                         <div class="nav-toggle">
                             <button class="btn btn-toggle toggle-sidebar">
@@ -179,7 +180,8 @@
                                             <div class="notif-center">
                                                 <a href="#">
                                                     <div class="notif-img">
-                                                        <img src="assets/img/jm_denis.jpg" alt="Img Profile" />
+                                                        <img src="{{ asset('assets/img/jm_denis.jpg') }}"
+                                                            alt="Img Profile" />
                                                     </div>
                                                     <div class="notif-content">
                                                         <span class="subject">Jimmy Denis</span>
@@ -189,7 +191,8 @@
                                                 </a>
                                                 <a href="#">
                                                     <div class="notif-img">
-                                                        <img src="assets/img/chadengle.jpg" alt="Img Profile" />
+                                                        <img src="{{ asset('assets/img/chadengle.jpg') }}"
+                                                            alt="Img Profile" />
                                                     </div>
                                                     <div class="notif-content">
                                                         <span class="subject">Chad</span>
@@ -199,7 +202,8 @@
                                                 </a>
                                                 <a href="#">
                                                     <div class="notif-img">
-                                                        <img src="assets/img/mlane.jpg" alt="Img Profile" />
+                                                        <img src="{{ asset('assets/img/mlane.jpg') }}"
+                                                            alt="Img Profile" />
                                                     </div>
                                                     <div class="notif-content">
                                                         <span class="subject">Jhon Doe</span>
@@ -211,7 +215,8 @@
                                                 </a>
                                                 <a href="#">
                                                     <div class="notif-img">
-                                                        <img src="assets/img/talha.jpg" alt="Img Profile" />
+                                                        <img src="{{ asset('assets/img/talha.jpg') }}"
+                                                            alt="Img Profile" />
                                                     </div>
                                                     <div class="notif-content">
                                                         <span class="subject">Talha</span>
@@ -266,7 +271,8 @@
                                                 </a>
                                                 <a href="#">
                                                     <div class="notif-img">
-                                                        <img src="assets/img/profile2.jpg" alt="Img Profile" />
+                                                        <img src="{{ asset('assets/img/profile2.jpg') }}"
+                                                            alt="Img Profile" />
                                                     </div>
                                                     <div class="notif-content">
                                                         <span class="block">
@@ -377,8 +383,8 @@
                                         <li>
                                             <div class="user-box">
                                                 <div class="avatar-lg">
-                                                    <img src="assets/img/profile.jpg" alt="image profile"
-                                                        class="avatar-img rounded" />
+                                                    <img src="{{ asset('assets/img/profile.jpg') }}"
+                                                        alt="image profile" class="avatar-img rounded" />
                                                 </div>
                                                 <div class="u-text">
                                                     <h4>Hizrian</h4>
@@ -524,7 +530,7 @@
     <script src={{ asset('"assets/js/plugin/datatables/datatables.min.js') }}"></script>
 
     <!-- Bootstrap Notify -->
-    <script src="a{{ asset('ssets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 
     <!-- jQuery Vector Maps -->
     <script src="{{ asset('assets/js/plugin/jsvectormap/jsvectormap.min.js') }}"></script>

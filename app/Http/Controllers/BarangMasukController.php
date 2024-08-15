@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\BarangMasuk;
+use App\Models\Katalogbarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 class BarangMasukController extends Controller
 {
@@ -14,6 +17,7 @@ class BarangMasukController extends Controller
     public function index()
     {
         $barangMasuk = BarangMasuk::with('katalogBarang')->get();
+        $katalogBarang = Katalogbarang::all();
         $barangMasukGroupBy = BarangMasuk::getBarangMasukByGroup();
 
         // Logic Query Bisa dari controller atau model, contoh dari controller
@@ -23,7 +27,7 @@ class BarangMasukController extends Controller
         //     ->with('katalogBarang')
         //     ->get();
 
-        return view('barang-masuk.index', compact('barangMasuk', 'barangMasukGroupBy'));
+        return view('barang-masuk.index', compact('barangMasuk', 'barangMasukGroupBy','katalogBarang'));
     }
 
     /**
@@ -39,7 +43,24 @@ class BarangMasukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'katalog_barang_id' => 'required|integer',
+            'stok_masuk' => 'required|integer',
+            'keterangan' => 'string',
+        ]);
+
+        try {
+            $barangMasuk = BarangMasuk::create($validated);
+
+            if (!$barangMasuk) {
+                throw new \Exception('Gagal membuat data barang masuk.');
+            }
+
+            return response()->json(['success' => 'Data berhasil ditambahkan']);
+        } catch (\Exception $e) {
+            Log::error('Error storing barang masuk: ' . $e->getMessage());
+            return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+        }
     }
 
     /**

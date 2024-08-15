@@ -4,13 +4,13 @@
     <div class="container">
         <div class="col-md-12">
             <div>
-                {{ !empty($namaBarang) ? $namaBarang . ' Barang Masuk' : $namaBarang . 'Barang Kosong' }}
+                <h1 style="font-size: 3rem;"> Brang Masuk</h1>
             </div>
             <div class="row">
                 <div class="col-6">
                     <div class="card h-100"> <!-- h-100 will make the card fill the height of the parent container -->
                         <div class="card-header">
-                            <h4 class="card-title">Multi Filter Select</h4>
+                            <h4 class="card-title">Tabel Barang msuk by Kategori</h4>
                         </div>
                         <div class="card-body" style="max-height: 400px; overflow-y: auto;">
                             <div class="table-responsive">
@@ -58,8 +58,56 @@
             </div>
 
             <div class="card mt-5">
-                <div class="card-header">
-                    <h4 class="card-title">Multi Filter Select</h4>
+                <div class="card-header d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">Raw Tabel Barang Masuk</h4>
+                    </div>
+                    <div class="">
+
+                        <!-- Button trigger modal -->
+                        {{-- <a href="#" class="btn btn-label-info btn-round btn-md" type="button"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <i class="fa fa-plus"></i>
+                            Tambah Barang Masuk
+                        </a> --}}
+                        <a href="#" class="btn btn-label-info btn-round btn-md" type="button" id="alert_demo_5">
+                            <i class="fa fa-plus"></i>
+                            Tambah Barang Masuk
+                        </a>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Form Tambah Data Barang Masuk
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="formTambahBarangMasuk" action="#" method="POST">
+                                            @csrf
+                                            <label for="namaBarang">Nama Barang</label>
+                                            <input type="text" class="form-control mb-3" id="namaBarang"
+                                                placeholder="Pilih Barang" />
+                                            <label for="stok_masuk">Stok Masuk</label>
+                                            <input type="text" class="form-control  mb-3" id="stok_masuk"
+                                                placeholder="Masukan jumlah stok masuk..." />
+                                            <label for="keterangan">Email Address</label>
+                                            <input type="text" class="form-control" id="keterangan"
+                                                placeholder="Enter Email" />
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -87,15 +135,15 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $data->katalogBarang->nama_barang }}</td>
-                                        <td>{{ $data->stok_masuk }}</td>
+                                        <td>{{ $data->stok_masuk }} - STOK</td>
                                         <td>{{ $data->keterangan }}</td>
                                         <td>
                                             <form action="POST" class="d-flex">
-                                                <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a>
-                                                <button type="submit" class="btn btn-danger mx-1"><i
-                                                        class="icon-trash"></i></button>
+                                                {{-- <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a> --}}
                                                 <a href="" class="btn btn-warning mx-1"><i
                                                         class="icon-pencil"></i></a>
+                                                <button type="submit" class="btn btn-danger mx-1"><i
+                                                        class="icon-trash"></i></button>
                                             </form>
                                         </td>
                                     </tr>
@@ -118,6 +166,7 @@
     <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="{{ asset('assets/js/setting-demo2.js') }}"></script>
+
     <script>
         var lineChart = document.getElementById("lineChart").getContext("2d")
 
@@ -183,6 +232,85 @@
                     },
                 },
             },
+        });
+    </script>
+    <script>
+        $("#alert_demo_5").click(function(e) {
+            var katalogBarang = @json($katalogBarang);
+            var selectOptions = '';
+            katalogBarang.forEach(function(barang) {
+                selectOptions +=
+                    `<option value="${barang.id}">${barang.nama_barang}</option>`; // Pastikan ID yang benar
+            });
+            swal({
+                title: "Tambah Data Barang Masuk",
+                content: {
+                    element: "div",
+                    attributes: {
+                        innerHTML: `
+                    <div class="form-group">
+                        <label for="nama-barang">Nama Barang</label>
+                        <select class="form-control" id="nama-barang" name="katalog_barang_id">
+                            ${selectOptions}
+                        </select>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="stok-masuk">Stok Masuk</label>
+                        <input type="number" class="form-control" id="stok-masuk" placeholder="Jumlah Stok Masuk" name="stok_masuk">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="keterangan">Keterangan</label>
+                        <input type="text" class="form-control" id="keterangank" placeholder="Keterangan" name="keterangank">
+                    </div>
+                `
+                    }
+                },
+                buttons: {
+                    cancel: {
+                        visible: true,
+                        className: "btn btn-danger",
+                    },
+                    confirm: {
+                        text: "Simpan",
+                        className: "btn btn-success",
+                    },
+                },
+            }).then(function(result) {
+                if (result) {
+                    let katalogBarangId = $("#nama-barang").val();
+                    let stokMasuk = $("#stok-masuk").val();
+                    let keterangan = $("#keterangank").val();
+
+                    // Debugging data sebelum mengirim request
+                    console.log({
+                        katalog_barang_id: katalogBarangId,
+                        stok_masuk: stokMasuk,
+                        keterangan: keterangan
+                    });
+
+                    // Kirim data ke server melalui AJAX
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('barang-masuk.store') }}',
+                        data: {
+                            katalog_barang_id: katalogBarangId,
+                            stok_masuk: stokMasuk,
+                            keterangan: keterangan,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            swal("Sukses!", "Data telah ditambahkan!", "success");
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(xhr.responseText);
+                            swal("Error!", "Terjadi kesalahan saat menambahkan data!", "error");
+                        }
+                    });
+                }
+            });
         });
     </script>
 @endsection

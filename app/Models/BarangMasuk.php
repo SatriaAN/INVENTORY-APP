@@ -12,6 +12,14 @@ class BarangMasuk extends Model
     use HasFactory;
     protected $table = 'barang_masuk';
 
+    protected $fillable = [
+        'katalog_barang_id',
+        'stok_masuk',
+        'keterangan',
+        'created_at',
+        'updated_at'
+    ];
+
     public static function getAllData()
     {
         return self::all();
@@ -29,15 +37,7 @@ class BarangMasuk extends Model
 
     public static function getBarangMasukByGroup()
     {
-        // return DB::table('barang_masuk as b')
-        // ->join('katalog_barang as a', 'b.katalog_barang_id', '=', 'a.id')
-        // ->selectRaw('a.nama_barang, SUM(b.stok_masuk) AS stok_masuk, ')
-        // ->groupBy('a.nama_barang')
-        // ->get();
-
-        //contoh query dari model
-
-        return self::select('katalog_barang_id', DB::raw('SUM(stok_masuk) as total_stok_masuk'))
+        return self::select('katalog_barang_id', DB::raw('SUM(stok_masuk) as stok_masuk'))
             ->groupBy('katalog_barang_id')
             ->with('katalogBarang')
             ->get();

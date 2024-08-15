@@ -4,11 +4,29 @@
     <div class="container">
         <div class="col-md-12">
             <div>
-                <h1 class="my-4">Barang Terjual</h1>
+                <h1 class="my-4">{{ !empty($namaBarang) ? $namaBarang . ' Masuk' : $namaBarang . ' Kosong' }}</h1>
             </div>
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Multi Filter Select</h4>
+                <div class="card-header d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">Tabel
+                            {{ !empty($namaBarang) ? $namaBarang . ' Masuk' : $namaBarang . ' Kosong' }}
+                        </h4>
+                    </div>
+                    <div class="mx-3">
+                        <a href="{{ route('barang-masuk.index') }}" class="btn btn-label-warning btn-round btn-md"">
+                            <span class="btn-label">
+                                <i class="fas fa-long-arrow-alt-left"></i>
+                            </span>
+                            Kembali
+                        </a>
+                        <a href="#" class="btn btn-label-primary btn-round btn-md">
+                            <span class="btn-label">
+                                <i class="fa fa-plus"></i>
+                            </span>
+                            Tambah Barang Masuk
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -19,7 +37,8 @@
                                     <th>Nama Barang</th>
                                     <th>Jumlah Terjual</th>
                                     <th>Keterangan</th>
-                                    <th>Actions</th>
+                                    <th>Tanggal Dibuat</th>
+                                    <th>Tanggal Diupadte</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -28,7 +47,8 @@
                                     <th>Nama Barang</th>
                                     <th>Jumlah Terjual</th>
                                     <th>Keterangan</th>
-                                    <th>Actions</th>
+                                    <th>Tanggal Dibuat</th>
+                                    <th>Tanggal Diupadte</th>
                                 </tr>
                             </tfoot>
                             <tbody>
