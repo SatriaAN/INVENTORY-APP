@@ -46,7 +46,7 @@ class BarangMasukController extends Controller
             $validated = $request->validate([
                 'katalog_barang_id' => 'required|integer',
                 'stok_masuk' => 'required|integer',
-                'keterangan' => 'string',
+                'keterangan' => 'required|string',
             ]);
 
             try {

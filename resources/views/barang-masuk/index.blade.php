@@ -63,50 +63,10 @@
                         <h4 class="card-title">Raw Tabel Barang Masuk</h4>
                     </div>
                     <div class="">
-
-                        <!-- Button trigger modal -->
-                        {{-- <a href="#" class="btn btn-label-info btn-round btn-md" type="button"
-                            data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            <i class="fa fa-plus"></i>
-                            Tambah Barang Masuk
-                        </a> --}}
                         <a href="#" class="btn btn-label-info btn-round btn-md" type="button" id="alert_demo_5">
                             <i class="fa fa-plus"></i>
                             Tambah Barang Masuk
                         </a>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Form Tambah Data Barang Masuk
-                                        </h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form id="formTambahBarangMasuk" action="#" method="POST">
-                                            @csrf
-                                            <label for="namaBarang">Nama Barang</label>
-                                            <input type="text" class="form-control mb-3" id="namaBarang"
-                                                placeholder="Pilih Barang" />
-                                            <label for="stok_masuk">Stok Masuk</label>
-                                            <input type="text" class="form-control  mb-3" id="stok_masuk"
-                                                placeholder="Masukan jumlah stok masuk..." />
-                                            <label for="keterangan">Email Address</label>
-                                            <input type="text" class="form-control" id="keterangan"
-                                                placeholder="Enter Email" />
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-success">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -260,7 +220,7 @@
                     </div>
                     <div class="form-group mt-2">
                         <label for="keterangan">Keterangan</label>
-                        <input type="text" class="form-control" id="keterangank" placeholder="Keterangan" name="keterangank">
+                        <input type="text" class="form-control" id="keterangan" placeholder="Keterangan" name="keterangan">
                     </div>
                 `
                     }
@@ -279,7 +239,7 @@
                 if (result) {
                     let katalogBarangId = $("#nama-barang").val();
                     let stokMasuk = $("#stok-masuk").val();
-                    let keterangan = $("#keterangank").val();
+                    let keterangan = $("#keterangan").val();
 
                     // console.log({
                     //     katalog_barang_id: katalogBarangId,
@@ -305,8 +265,27 @@
                             }, 2000);
                         },
                         error: function(xhr, status, error) {
-                            console.log(xhr.responseText);
-                            swal("Error!", "Terjadi kesalahan saat menambahkan data!", "error");
+                            var errors = xhr.responseJSON.errors;
+                            var errorMessages = '';
+
+                            // Gabungkan semua pesan error
+                            $.each(errors, function(key, messages) {
+                                messages.forEach(function(message) {
+                                    errorMessages += message + '<br>';
+                                });
+                            });
+
+                            // Tampilkan pesan error dengan SweetAlert
+                            swal({
+                                title: "Error!",
+                                content: {
+                                    element: "div",
+                                    attributes: {
+                                        innerHTML: `<div>${errorMessages}</div>`
+                                    }
+                                },
+                                icon: "error"
+                            });
                         }
                     });
                 }
