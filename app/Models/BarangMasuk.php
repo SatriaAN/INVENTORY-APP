@@ -47,6 +47,7 @@ class BarangMasuk extends Model
     {
         return self::where('katalog_barang_id', $katalog_barang_id)
             ->with('katalogBarang')
+            ->orderBy('created_at','desc')
             ->get();
     }
 }

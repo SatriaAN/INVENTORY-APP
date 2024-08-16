@@ -10,7 +10,7 @@
                 <div class="col-6">
                     <div class="card h-100">
                         <div class="card-header">
-                            <h4 class="card-title">Multi Filter Select</h4>
+                            <h4 class="card-title">Tabel Barang Terjual by Kategori</h4>
                         </div>
                         <div class="card-body" style="max-height: 400px; overflow-y: auto;">
                             <div class="table-responsive">
@@ -59,8 +59,16 @@
             </div>
 
             <div class="card mt-5">
-                <div class="card-header">
-                    <h4 class="card-title">Multi Filter Select</h4>
+                <div class="card-header d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">Raw Tabel Barang Terjual</h4>
+                    </div>
+                    <div>
+                        <a href="#" class="btn btn-label-info btn-round btn-md" type="button" id="alert_demo_5">
+                            <i class="fa fa-plus">&nbsp;</i>
+                            Tambah Barang Terjual
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -69,7 +77,7 @@
                                 <tr>
                                     <th>NO</th>
                                     <th>Nama Barang</th>
-                                    <th>Jumlah Terjual</th>
+                                    <th>Stok Terjual</th>
                                     <th>Keterangan</th>
                                     <th>Actions</th>
                                 </tr>
@@ -78,7 +86,7 @@
                                 <tr>
                                     <th>NO</th>
                                     <th>Nama Barang</th>
-                                    <th>Jumlah Terjual</th>
+                                    <th>Stok Terjual</th>
                                     <th>Keterangan</th>
                                     <th>Actions</th>
                                 </tr>
@@ -88,15 +96,15 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $data->katalogBarang->nama_barang }}</td>
-                                        <td>{{ $data->jumlah_terjual }}</td>
+                                        <td>{{ $data->jumlah_terjual }} - STOK</td>
                                         <td>{{ $data->keterangan }}</td>
                                         <td>
                                             <form action="POST" class="d-flex">
-                                                <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a>
-                                                <button type="submit" class="btn btn-danger mx-1"><i
-                                                        class="icon-trash"></i></button>
+                                                {{-- <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a> --}}
                                                 <a href="" class="btn btn-warning mx-1"><i
                                                         class="icon-pencil"></i></a>
+                                                <button type="submit" class="btn btn-danger mx-1"><i
+                                                        class="icon-trash"></i></button>
                                             </form>
                                         </td>
                                     </tr>
@@ -184,6 +192,92 @@
                     },
                 },
             },
+        });
+    </script>
+    <script>
+        $("#alert_demo_5").click(function(e) {
+            var katalogBarang = @json($katalogBarang);
+            var selectOptions = '';
+            katalogBarang.forEach(function(barang) {
+                selectOptions += `<option value="${barang.id}">${barang.nama_barang}</option>`;
+            });
+            swal({
+                title: "Tambah Data Barang Terjual",
+                content: {
+                    element: "div",
+                    attributes: {
+                        innerHTML: `
+                        <div class="form-group">
+                            <label for="nama-barang">Nama Barang</label>
+                            <select class="form-control" id="nama-barang" name="katalog_barang_id">
+                                ${selectOptions}
+                            </select>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="jumlah-terjual">Terjual</label>
+                            <input min="1" type="number" class="form-control" id="jumlah-terjual" placeholder="Jumlah Stok Terjual" name="jumlah_terjual">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="keterangan">Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan" placeholder="Keterangan" name="keterangan">
+                        </div>`
+                    }
+                },
+                buttons: {
+                    cancel: {
+                        visible: true,
+                        className: "btn btn-danger",
+                    },
+                    confirm: {
+                        text: "Simpan",
+                        className: "btn btn-success",
+                    },
+                },
+            }).then(function(result) {
+                if (result) {
+                    let katalogBarangId = $("#nama-barang").val();
+                    let jumlahTerjual = $("#jumlah-terjual").val();
+                    let keterangan = $("#keterangan").val();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('barang-terjual.store') }}',
+                        data: {
+                            katalog_barang_id: katalogBarangId,
+                            jumlah_terjual: jumlahTerjual,
+                            keterangan: keterangan,
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(response) {
+                            swal("Sukses!", "Data telah Ditambahkan!", "success");
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        },
+                        error: function(xhr, status, error) {
+                            var errors = xhr.responseJSON.errors;
+                            var errorMessages = '';
+
+                            $.each(errors, function(key, messages) {
+                                messages.forEach(function(message) {
+                                    errorMessages += message + '<br>';
+                                });
+                            });
+
+                            swal({
+                                title: "Error!",
+                                content: {
+                                    element: "div",
+                                    attributes: {
+                                        innerHTML: `<div>${errorMessages}</div>`
+                                    }
+                                },
+                                icon: "error",
+                            });
+                        }
+                    });
+                }
+            });
         });
     </script>
 @endsection
