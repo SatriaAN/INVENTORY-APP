@@ -5,11 +5,28 @@
     <div class="container">
         <div class="col-md-12">
             <div>
-                <h1 class="my-4">{{ $namaBarang }} Terjual</h1>
+                <h1 class="my-4">{{ !empty($namaBarang) ? $namaBarang . ' Terjual' : $namaBarang . ' Kosong' }}</h1>
             </div>
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Multi Filter Select</h4>
+                <div class="card-header d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">Tabel
+                            {{ !empty($namaBarang) ? $namaBarang . ' Terjual' : $namaBarang . 'Kosong' }}</h4>
+                    </div>
+                    <div class="mx-3">
+                        <a href="{{ route('barang-terjual.index') }}" class="btn btn-label-warning btn-round btn-md">
+                            <div class="btn-label">
+                                <i class="fas fa-long-arrow-alt-left"></i>
+                            </div>
+                            Kembali
+                        </a>
+                        <a href="#" class="btn btn-label-primary btn-round btn-md">
+                            <div class="btn-label">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            Tambah Barang Terjual
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
