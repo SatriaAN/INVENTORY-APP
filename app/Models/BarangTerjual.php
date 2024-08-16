@@ -12,6 +12,14 @@ class BarangTerjual extends Model
     use HasFactory;
     protected $table = 'barang_terjual';
 
+    protected $fillable = [
+        'katalog_barang_id',
+        'jumlah_terjual',
+        'keterangan',
+        'created_at',
+        'updated_at'
+    ];
+
     public static function getAllData()
     {
         return self::all();
@@ -39,6 +47,7 @@ class BarangTerjual extends Model
     {
         return self::where('katalog_barang_id', $katalog_barang_id)
             ->with('katalogBarang')
+            ->orderBy('created_at', 'desc')
             // ->get(['id', 'jumlah_terjual', 'created_at', 'updated_at']);
             ->get();
     }
