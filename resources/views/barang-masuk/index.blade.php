@@ -98,10 +98,10 @@
                                         <td>{{ $data->stok_masuk }} - STOK</td>
                                         <td>{{ $data->keterangan }}</td>
                                         <td>
-                                            <form action="POST" class="d-flex">
+                                            <button class="btn btn-warning mx-1 edit-button"
+                                                data-id="{{ $data->id }}"><i class="icon-pencil"></i></button>
+                                            <form action="" class="d-flex">
                                                 {{-- <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a> --}}
-                                                <a href="" class="btn btn-warning mx-1"><i
-                                                        class="icon-pencil"></i></a>
                                                 <button type="submit" class="btn btn-danger mx-1"><i
                                                         class="icon-trash"></i></button>
                                             </form>
@@ -195,6 +195,7 @@
         });
     </script>
     <script>
+        // insert data barang masuk
         $("#alert_demo_5").click(function(e) {
             var katalogBarang = @json($katalogBarang);
             var selectOptions = '';
@@ -288,6 +289,114 @@
                             });
                         }
                     });
+                }
+            });
+        });
+        // Edit data barang masuk
+        $(".edit-button").click(function(e) {
+            var id = $(this).data("id");
+
+            // Ambil data barang masuk berdasarkan ID menggunakan AJAX
+            $.ajax({
+                type: 'GET',
+                url: '/barang-masuk/' + id + '/edit',
+                success: function(response) {
+                    var barangMasuk = response.barangMasuk;
+                    var katalogBarang = @json($katalogBarang);
+                    var selectOptions = '';
+
+                    katalogBarang.forEach(function(barang) {
+                        selectOptions +=
+                            `<option value="${barang.id}" ${barang.id == barangMasuk.katalog_barang_id ? 'selected' : ''}>${barang.nama_barang}</option>`;
+                    });
+
+                    swal({
+                        title: "Edit Data Barang Masuk",
+                        content: {
+                            element: "div",
+                            attributes: {
+                                innerHTML: `
+                        <div class="form-group">
+                            <label for="nama-barang">Nama Barang</label>
+                            <select class="form-control" id="nama-barang" name="katalog_barang_id">
+                                ${selectOptions}
+                            </select>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="stok-masuk">Stok Masuk</label>
+                            <input type="number" class="form-control" id="stok-masuk" value="${barangMasuk.stok_masuk}" placeholder="Jumlah Stok Masuk" name="stok_masuk">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="keterangan">Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan" value="${barangMasuk.keterangan}" placeholder="Keterangan" name="keterangan">
+                        </div>
+                        `
+                            }
+                        },
+                        buttons: {
+                            cancel: {
+                                visible: true,
+                                className: "btn btn-danger",
+                            },
+                            confirm: {
+                                text: "Simpan",
+                                className: "btn btn-success",
+                            },
+                        },
+                    }).then(function(result) {
+                        if (result) {
+                            let katalogBarangId = $("#nama-barang").val();
+                            let stokMasuk = $("#stok-masuk").val();
+                            let keterangan = $("#keterangan").val();
+
+                            // Mengirim data ke server pake AJAX
+                            $.ajax({
+                                type: 'PUT',
+                                url: '/barang-masuk/' + id,
+                                data: {
+                                    katalog_barang_id: katalogBarangId,
+                                    stok_masuk: stokMasuk,
+                                    keterangan: keterangan,
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function(response) {
+                                    swal("Sukses!", "Data telah diubah!",
+                                        "success");
+                                    // nunggu 2 detik setelah berhasil update data
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 2000);
+                                },
+                                error: function(xhr, status, error) {
+                                    var errors = xhr.responseJSON.errors;
+                                    var errorMessages = '';
+
+                                    // Gabungkan semua pesan error
+                                    $.each(errors, function(key, messages) {
+                                        messages.forEach(function(message) {
+                                            errorMessages +=
+                                                message + '<br>';
+                                        });
+                                    });
+
+                                    // Tampilkan pesan error dengan SweetAlert
+                                    swal({
+                                        title: "Error!",
+                                        content: {
+                                            element: "div",
+                                            attributes: {
+                                                innerHTML: `<div>${errorMessages}</div>`
+                                            }
+                                        },
+                                        icon: "error"
+                                    });
+                                }
+                            });
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    swal("Error!", "Terjadi kesalahan saat mengambil data!", "error");
                 }
             });
         });
