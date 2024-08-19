@@ -98,11 +98,12 @@
                                         <td>{{ $data->katalogBarang->nama_barang }}</td>
                                         <td>{{ $data->jumlah_terjual }} - STOK</td>
                                         <td>{{ $data->keterangan }}</td>
-                                        <td>
+                                        <td class="d-flex">
+                                            <a href="{{ route('barang-terjual.edit', $data->id) }}"
+                                                class="btn btn-warning mx-1" id="modalEditBarangTerjual">
+                                                <i class="icon-pencil"></i></a>
                                             <form action="POST" class="d-flex">
                                                 {{-- <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a> --}}
-                                                <a href="" class="btn btn-warning mx-1"><i
-                                                        class="icon-pencil"></i></a>
                                                 <button type="submit" class="btn btn-danger mx-1"><i
                                                         class="icon-trash"></i></button>
                                             </form>
@@ -117,16 +118,8 @@
         </div>
     </div>
     <script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
     <!-- Chart JS -->
     <script src="{{ asset('assets/js/plugin/chart.js/chart.min.js') }}"></script>
-    <!-- jQuery Scrollbar -->
-    <script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
-    <!-- Kaiadmin JS -->
-    <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
-    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="{{ asset('assets/js/setting-demo2.js') }}"></script>
     <script>
         var lineChart = document.getElementById("lineChart").getContext("2d")
 
@@ -277,6 +270,108 @@
                         }
                     });
                 }
+            });
+        });
+    </script>
+    <script>
+        //Gunain event DELEGATION untuk menangani klik pada tombol edit
+        $(document).on('click', '#modalEditBarangTerjual', function(e) {
+            e.preventDefault();
+
+            //ambil url dari tombol yang aku klik
+            let url = $(this).attr('href');
+
+
+            //ajax request ke url untuk dapatin data barang terjual
+            $.get(url, function(data) {
+                let selectedBarangId = data.barangTerjual.katalog_barang_id;
+                let jumlahTerjual = data.barangTerjual.jumlah_terjual;
+                let keterangan = data.barangTerjual.keterangan;
+
+                let namaBarangOptions = '';
+                data.katalogBarang.forEach(function(barang) {
+                    namaBarangOptions +=
+                        `<option value="${barang.id}" ${barang.id == selectedBarangId ? 'selected' : ''}>${barang.nama_barang}</option>`
+                });
+
+                swal({
+                    title: `Edit Data Terjual`,
+                    content: {
+                        element: "div",
+                        attributes: {
+                            innerHTML: `
+                            <div class="form-group">
+                                <label for="nama-barang">Nama Barang</label>
+                                <select class="form-control" id="nama-barang" name="katalog_barang_id">
+                                ${namaBarangOptions}
+                                </select>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="jumlah-terjual">Terjual</label>
+                                <input min="1" type="number" class="form-control" id="jumlah-terjual" value="${jumlahTerjual}" placeholder="Jumlah Stok Terjual" name="jumlah_terjual">
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="keterangan">Keterangan</label>
+                                <input type="text" class="form-control" id="keterangan" value="${keterangan}" placeholder="Keterangan" name="keterangan">
+                            </div>`
+                        }
+                    },
+                    buttons: {
+                        cancel: {
+                            visible: true,
+                            className: "btn btn-danger",
+                        },
+                        confirm: {
+                            text: "Simpan",
+                            className: "btn btn-success",
+                        },
+                    },
+                }).then(function(result) {
+                    if (result) {
+                        let katalogBarangId = $("#nama-barang").val();
+                        let jumlahTerjual = $("#jumlah-terjual").val();
+                        let keterangan = $("#keterangan").val();
+
+                        $.ajax({
+                            type: "POST",
+                            url: '{{ route('barang-terjual.update', $data->id) }}',
+                            data: {
+                                _method: "PUT",
+                                katalog_barang_id: katalogBarangId,
+                                jumlah_terjual: jumlahTerjual,
+                                keterangan: keterangan,
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(response) {
+                                swal("Sukses", "Data telah Diperbarui!", "success");
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
+                            },
+                            error: function(xhr, status, error) {
+                                var errors = xhr.responseJSON.errors;
+                                var errorMessages = '';
+
+                                $.each(errors, function(key, messages) {
+                                    messages.forEach(function(message) {
+                                        errorMessages += message +
+                                            '<br>';
+                                    });
+                                });
+                                swal({
+                                    title: "Error!",
+                                    content: {
+                                        element: "div",
+                                        attributes: {
+                                            innerHTML: `<div>${errorMessages}</div>`
+                                        }
+                                    },
+                                    icon: "error",
+                                });
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>

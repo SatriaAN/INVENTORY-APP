@@ -37,18 +37,9 @@ class BarangTerjualController extends Controller
             'keterangan' => 'required|string',
         ]);
 
-        try {
-            $barangTerjual = BarangTerjual::create($validated);
+        $barangTerjual = BarangTerjual::create($validated);
 
-            if (!$barangTerjual) {
-                throw new \Exception('Gagal memuat data barang terjual.');
-            }
-
-            return response()->json(['success' => 'Data Berhasil Ditambahkan']);
-        } catch (\Exception $e) {
-            Log::error('Error storing barang terjual:' . $e->getMessage());
-            return response()->json(['error' => 'Terjadi Kesalahan:' . $e->getMessage()], 500);
-        }
+        $barangTerjual->save();
     }
 
     public function showDetail($katalog_barang_id)
@@ -57,7 +48,7 @@ class BarangTerjualController extends Controller
         $detailBarangTerjual = BarangTerjual::getDetailBarangTerjual($katalog_barang_id);
         $namaBarang = $detailBarangTerjual->first()->katalogBarang->nama_barang ?? 'Data Tidak Ditemukan';
 
-        return view('barang-terjual.detail', compact('detailBarangTerjual', 'namaBarang','katalogBarang','katalog_barang_id'));
+        return view('barang-terjual.detail', compact('detailBarangTerjual', 'namaBarang', 'katalogBarang', 'katalog_barang_id'));
     }
 
 
@@ -66,24 +57,40 @@ class BarangTerjualController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $barangTerjual = BarangTerjual::findOrFail($id);
+        $katalogBarang = Katalogbarang::all();
+
+        return response()->json(compact('barangTerjual', 'katalogBarang'));;
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'katalog_barang_id' => 'required|integer',
+            'jumlah_terjual' => 'required|integer',
+            'keterangan' => 'required|string',
+        ]);
+
+        $barangTerjual = BarangTerjual::findOrFail($id);
+        $barangTerjual->katalog_barang_id = $request->katalog_barang_id;
+        $barangTerjual->jumlah_terjual = $request->jumlah_terjual;
+        $barangTerjual->keterangan = $request->keterangan;
+
+        $barangTerjual->save();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        BarangTerjual::where('id', $id)->delete();
+
+        return redirect()->route('culture.index')->with('success', 'Culture Berhasil Di Hapus');
     }
 }
