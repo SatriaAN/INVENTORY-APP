@@ -98,9 +98,9 @@
                                         <td>{{ $data->stok_masuk }} - STOK</td>
                                         <td>{{ $data->keterangan }}</td>
                                         <td>
-                                            <button class="btn btn-warning mx-1 edit-button"
-                                                data-id="{{ $data->id }}"><i class="icon-pencil"></i></button>
                                             <form action="" class="d-flex">
+                                                <button class="btn btn-warning mx-1 edit-button"
+                                                    data-id="{{ $data->id }}"><i class="icon-pencil"></i></button>
                                                 {{-- <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a> --}}
                                                 <button type="submit" class="btn btn-danger mx-1"><i
                                                         class="icon-trash"></i></button>

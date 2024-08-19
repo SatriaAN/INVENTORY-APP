@@ -15,16 +15,17 @@
                     </div>
                     <div class="mx-3">
                         <a href="{{ route('barang-masuk.index') }}" class="btn btn-label-warning btn-round btn-md"">
-                            <span class="btn-label">
+                            <div class="btn-label">
                                 <i class="fas fa-long-arrow-alt-left"></i>
-                            </span>
+                            </div>
                             Kembali
                         </a>
-                        <a href="#" class="btn btn-label-primary btn-round btn-md">
-                            <span class="btn-label">
-                                <i class="fa fa-plus"></i>
-                            </span>
-                            Tambah Barang Masuk
+                        <a href="#" class="btn btn-label-primary btn-round btn-md" type="button"
+                            id="modalCreateByKategori">
+                            <div class="btn-label">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            Tambah Barang Terjual
                         </a>
                     </div>
                 </div>
@@ -69,4 +70,88 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script>
+    <script>
+        $("#modalCreateByKategori").click(function(e) {
+            var selectedBarangId = @json($katalog_barang_id);
+            var selectedNamaBarang = "{{ $namaBarang }}";
+
+            swal({
+                title: `Tambah Data ${selectedNamaBarang} Masuk`,
+                content: {
+                    element: "div",
+                    attributes: {
+                        innerHTML: `
+                <div class="form-group">
+                    <label for="nama-barang">Nama Barang</label>
+                    <input type="text" class="form-control" id="nama-barang" value="${selectedNamaBarang}" readonly>
+                    <input type="hidden" id="katalog-barang-id" value="${selectedBarangId}">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="stok-masuk">Stok Masuk</label>
+                    <input min="1" type="number" class="form-control" id="stok-masuk" placeholder="Jumlah Stok Masuk" name="stok_masuk">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="keterangan">Keterangan</label>
+                    <input type="text" class="form-control" id="keterangan" placeholder="Keterangan" name="keterangan">
+                </div>`
+                    }
+                },
+                buttons: {
+                    cancel: {
+                        visible: true,
+                        className: "btn btn-danger",
+                    },
+                    confirm: {
+                        text: "Simpan",
+                        className: "btn btn-success",
+                    },
+                },
+            }).then(function(result) {
+                if (result) {
+                    let katalogBarangId = $("#katalog-barang-id").val();
+                    let stokMasuk = $("#stok-masuk").val();
+                    let keterangan = $("#keterangan").val();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('barang-masuk.store') }}',
+                        data: {
+                            katalog_barang_id: katalogBarangId,
+                            stok_masuk: stokMasuk,
+                            keterangan: keterangan,
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(response) {
+                            swal("Sukses!", "Data telah Ditambahkan!", "success");
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        },
+                        error: function(xhr, status, error) {
+                            var errors = xhr.responseJSON.errors;
+                            var errorMessages = '';
+
+                            $.each(errors, function(key, messages) {
+                                messages.forEach(function(message) {
+                                    errorMessages += message + '<br>';
+                                });
+                            });
+
+                            swal({
+                                title: "Error!",
+                                content: {
+                                    element: "div",
+                                    attributes: {
+                                        innerHTML: `<div>${errorMessages}</div>`
+                                    }
+                                },
+                                icon: "error",
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 @endsection

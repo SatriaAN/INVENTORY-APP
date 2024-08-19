@@ -20,7 +20,7 @@
                             Kembali
                         </a>
                         <a href="#" class="btn btn-label-primary btn-round btn-md" type="button"
-                            id="modalCreateByKategori"">
+                            id="modalCreateByKategori">
                             <div class="btn-label">
                                 <i class="fas fa-plus"></i>
                             </div>

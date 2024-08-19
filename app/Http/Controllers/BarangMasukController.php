@@ -73,7 +73,7 @@ class BarangMasukController extends Controller
         $namaBarang = $detailBarangMasuk->first()->katalogBarang->nama_barang;
 
 
-        return view('barang-masuk.detail', compact('detailBarangMasuk', 'namaBarang'));
+        return view('barang-masuk.detail', compact('detailBarangMasuk', 'namaBarang','katalog_barang_id'));
     }
 
     public function show($id)
