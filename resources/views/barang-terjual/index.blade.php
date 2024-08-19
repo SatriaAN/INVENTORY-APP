@@ -334,10 +334,11 @@
 
                         $.ajax({
                             type: "POST",
-                            url: '{{ route('barang-terjual.update', $data->id) }}',
+                            url: '{{ route('barang-terjual.update', ':id') }}'.replace(
+                                ':id', data.barangTerjual.id),
                             data: {
                                 _method: "PUT",
-                                katalog_barang_id: katalogBarangId,
+                                katalog_barang_id: katalogBarangId, // ID barang dari katalog
                                 jumlah_terjual: jumlahTerjual,
                                 keterangan: keterangan,
                                 _token: '{{ csrf_token() }}',

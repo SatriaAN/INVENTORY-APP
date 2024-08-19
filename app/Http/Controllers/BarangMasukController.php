@@ -94,7 +94,18 @@ class BarangMasukController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'katalog_barang_id' => 'required|integer',
+            'stok_masuk' => 'required|integer',
+            'keterangan' => 'required|string',
+        ]);
+
+        $barangMasuk = BarangMasuk::findOrFail($id);
+        $barangMasuk->katalog_barang_id = $request->katalog_barang_id;
+        $barangMasuk->stok_masuk = $request->stok_masuk;
+        $barangMasuk->keterangan = $request->keterangan;
+
+        $barangMasuk->save();
     }
 
     /**
