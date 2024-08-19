@@ -33,7 +33,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('barang-terjual', BarangTerjualController::class);
     Route::get('/detail-barang-terjual/{katalog_barang_id}/', [BarangTerjualController::class, 'showDetail'])->name('barang-terjual.detail');
-
+    Route::get('/edit-barang-terjual/{id}/', [BarangTerjualController::class, 'edit'])->name('barang-terjual.edit');
+    
     Route::resource('laporan-keuangan', LaporanKeuanganController::class);
 });
 

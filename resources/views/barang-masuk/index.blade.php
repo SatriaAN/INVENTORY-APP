@@ -4,13 +4,13 @@
     <div class="container">
         <div class="col-md-12">
             <div>
-                <h1 style="font-size: 3rem;"> Brang Masuk</h1>
+                <h1 class="my-4">Barang Masuk</h1>
             </div>
             <div class="row">
                 <div class="col-6">
                     <div class="card h-100"> <!-- h-100 will make the card fill the height of the parent container -->
                         <div class="card-header">
-                            <h4 class="card-title">Tabel Barang msuk by Kategori</h4>
+                            <h4 class="card-title">Tabel Barang Masuk by Kategori</h4>
                         </div>
                         <div class="card-body" style="max-height: 400px; overflow-y: auto;">
                             <div class="table-responsive">
@@ -64,7 +64,7 @@
                     </div>
                     <div class="">
                         <a href="#" class="btn btn-label-info btn-round btn-md" type="button" id="alert_demo_5">
-                            <i class="fa fa-plus"></i>
+                            <i class="fa fa-plus"></i>&nbsp;
                             Tambah Barang Masuk
                         </a>
                     </div>
@@ -217,7 +217,7 @@
                     </div>
                     <div class="form-group mt-2">
                         <label for="stok-masuk">Stok Masuk</label>
-                        <input type="number" class="form-control" id="stok-masuk" placeholder="Jumlah Stok Masuk" name="stok_masuk">
+                        <input min="1" type="number" class="form-control" id="stok-masuk" placeholder="Jumlah Stok Masuk" name="stok_masuk">
                     </div>
                     <div class="form-group mt-2">
                         <label for="keterangan">Keterangan</label>

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BarangTerjual;
+use App\Models\Katalogbarang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BarangTerjualController extends Controller
 {
@@ -13,24 +15,12 @@ class BarangTerjualController extends Controller
     public function index()
     {
         $barangTerjual = BarangTerjual::with('katalogBarang')->get();
+        $katalogBarang = Katalogbarang::all();
         $barangTerjualGroupBy = BarangTerjual::getBarangTerjualByGroup();
 
-        return view('barang-terjual.index', compact('barangTerjual', 'barangTerjualGroupBy'));
+        return view('barang-terjual.index', compact('barangTerjual', 'barangTerjualGroupBy', 'katalogBarang'));
     }
 
-    public function showDetail($katalog_barang_id)
-    {
-
-
-        $detailBarangTerjual = BarangTerjual::getDetailBarangTerjual($katalog_barang_id);
-        $namaBarang = $detailBarangTerjual->first()->katalogBarang->nama_barang ?? 'Data Tidak Ditemukan';
-
-        return view('barang-terjual.detail', compact('detailBarangTerjual', 'namaBarang'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
@@ -41,38 +31,66 @@ class BarangTerjualController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'katalog_barang_id' => 'required|integer',
+            'jumlah_terjual' => 'required|integer',
+            'keterangan' => 'required|string',
+        ]);
+
+        $barangTerjual = BarangTerjual::create($validated);
+
+        $barangTerjual->save();
     }
 
-    /**
-     * Display the specified resource.
-     */
+    public function showDetail($katalog_barang_id)
+    {
+        $katalogBarang = Katalogbarang::all();
+        $detailBarangTerjual = BarangTerjual::getDetailBarangTerjual($katalog_barang_id);
+        $namaBarang = $detailBarangTerjual->first()->katalogBarang->nama_barang ?? 'Data Tidak Ditemukan';
+
+        return view('barang-terjual.detail', compact('detailBarangTerjual', 'namaBarang', 'katalogBarang', 'katalog_barang_id'));
+    }
+
+
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $barangTerjual = BarangTerjual::findOrFail($id);
+        $katalogBarang = Katalogbarang::all();
+
+        return response()->json(compact('barangTerjual', 'katalogBarang'));;
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'katalog_barang_id' => 'required|integer',
+            'jumlah_terjual' => 'required|integer',
+            'keterangan' => 'required|string',
+        ]);
+
+        $barangTerjual = BarangTerjual::findOrFail($id);
+        $barangTerjual->katalog_barang_id = $request->katalog_barang_id;
+        $barangTerjual->jumlah_terjual = $request->jumlah_terjual;
+        $barangTerjual->keterangan = $request->keterangan;
+
+        $barangTerjual->save();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        BarangTerjual::where('id', $id)->delete();
+
+        return redirect()->route('culture.index')->with('success', 'Culture Berhasil Di Hapus');
     }
 }

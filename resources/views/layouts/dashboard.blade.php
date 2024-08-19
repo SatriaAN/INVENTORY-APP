@@ -91,7 +91,7 @@
                                 <p>Barang Masuk</p>
                             </a>
                         </li>
-                        <li class="nav-item {{ request()->is('barang-terjual') ? 'active' : '' }}">
+                        <li class="nav-item {{ request()->is('barang-terjual') || request()->is('detail-barang-terjual/*') ? 'active' : '' }}">
                             <a href="{{ url('barang-terjual') }}" class="" aria-expanded="false">
                                 <i class="fas fa-table"></i>
                                 <p>Barang Terjual</p>
