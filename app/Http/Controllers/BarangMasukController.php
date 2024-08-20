@@ -84,9 +84,19 @@ class BarangMasukController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $barangMasuk = BarangMasuk::find($id);
+        if (!$barangMasuk) {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        }
+
+        $katalogBarang = KatalogBarang::all();
+
+        return response()->json([
+            'barangMasuk' => $barangMasuk,
+            'katalogBarang' => $katalogBarang
+        ]);
     }
 
     /**
@@ -113,6 +123,7 @@ class BarangMasukController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $barangMasuk = BarangMasuk::findOrFail($id);
+        $barangMasuk->delete();
     }
 }

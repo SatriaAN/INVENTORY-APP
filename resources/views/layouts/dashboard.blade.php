@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Web Inventory</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link rel="icon" href="{{ asset('assets/img/kaiadmin/favicon.ico') }}" type="image/x-icon" />
 
     <!-- Fonts and icons -->
@@ -91,7 +93,8 @@
                                 <p>Barang Masuk</p>
                             </a>
                         </li>
-                        <li class="nav-item {{ request()->is('barang-terjual') || request()->is('detail-barang-terjual/*') ? 'active' : '' }}">
+                        <li
+                            class="nav-item {{ request()->is('barang-terjual') || request()->is('detail-barang-terjual/*') ? 'active' : '' }}">
                             <a href="{{ url('barang-terjual') }}" class="" aria-expanded="false">
                                 <i class="fas fa-table"></i>
                                 <p>Barang Terjual</p>
