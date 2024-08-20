@@ -62,7 +62,7 @@ class BarangTerjualController extends Controller
         $barangTerjual = BarangTerjual::findOrFail($id);
         $katalogBarang = Katalogbarang::all();
 
-        return response()->json(compact('barangTerjual', 'katalogBarang'));;
+        return response()->json(compact('barangTerjual', 'katalogBarang'));
     }
 
     /**

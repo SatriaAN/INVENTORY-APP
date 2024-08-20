@@ -63,7 +63,7 @@
                         <h4 class="card-title">Raw Tabel Barang Masuk</h4>
                     </div>
                     <div class="">
-                        <a href="#" class="btn btn-label-info btn-round btn-md" type="button" id="alert_demo_5">
+                        <a href="#" class="btn btn-label-info btn-round btn-md" type="button" id="insertBarangMasuk">
                             <i class="fa fa-plus"></i>&nbsp;
                             Tambah Barang Masuk
                         </a>
@@ -98,11 +98,15 @@
                                         <td>{{ $data->stok_masuk }} - STOK</td>
                                         <td>{{ $data->keterangan }}</td>
                                         <td>
-                                            <form action="" class="d-flex">
-                                                <button class="btn btn-warning mx-1 edit-button"
-                                                    data-id="{{ $data->id }}"><i class="icon-pencil"></i></button>
+                                            <form id="deleteForm" action="{{ route('barang-masuk.destroy', $data->id) }}"
+                                                class="d-flex">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="{{ route('barang-masuk.edit', $data->id) }}"
+                                                    class="btn btn-warning mx-1" id="editBarangMasuk">
+                                                    <i class="icon-pencil"></i></a>
                                                 {{-- <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a> --}}
-                                                <button type="submit" class="btn btn-danger mx-1"><i
+                                                <button type="submit" class="btn btn-danger mx-1" id="deleteBarangMasuk"><i
                                                         class="icon-trash"></i></button>
                                             </form>
                                         </td>
@@ -124,12 +128,9 @@
     <script src="{{ asset('assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
     <!-- Kaiadmin JS -->
     <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
-    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="{{ asset('assets/js/setting-demo2.js') }}"></script>
 
     <script>
         var lineChart = document.getElementById("lineChart").getContext("2d")
-
         var myLineChart = new Chart(lineChart, {
             type: "line",
             data: {
@@ -193,10 +194,9 @@
                 },
             },
         });
-    </script>
-    <script>
+
         // insert data barang masuk
-        $("#alert_demo_5").click(function(e) {
+        $("#insertBarangMasuk").click(function(e) {
             var katalogBarang = @json($katalogBarang);
             var selectOptions = '';
             katalogBarang.forEach(function(barang) {
@@ -292,111 +292,290 @@
                 }
             });
         });
-        // Edit data barang masuk
-        $(".edit-button").click(function(e) {
-            var id = $(this).data("id");
 
-            // Ambil data barang masuk berdasarkan ID menggunakan AJAX
-            $.ajax({
-                type: 'GET',
-                url: '/barang-masuk/' + id + '/edit',
-                success: function(response) {
-                    var barangMasuk = response.barangMasuk;
-                    var katalogBarang = @json($katalogBarang);
-                    var selectOptions = '';
+        // edit data barang masuk
+        // $("#editBarangMasuk").click(function(e) {
+        //     e.preventDefault();
 
-                    katalogBarang.forEach(function(barang) {
-                        selectOptions +=
-                            `<option value="${barang.id}" ${barang.id == barangMasuk.katalog_barang_id ? 'selected' : ''}>${barang.nama_barang}</option>`;
-                    });
+        //     // Ambil URL dari tombol yang diklik
+        //     let url = $(this).attr('href');
 
-                    swal({
-                        title: "Edit Data Barang Masuk",
-                        content: {
-                            element: "div",
-                            attributes: {
-                                innerHTML: `
+        //     // AJAX request ke URL untuk mendapatkan data barang masuk
+        //     $.get(url, function(data) {
+        //         // Cek data yang diterima
+        //         console.log(data); // Untuk debug, pastikan data yang diterima sesuai
+
+        //         if (data.barangMasuk) {
+        //             let selectedBarangId = data.barangMasuk.katalog_barang_id;
+        //             let stokMasuk = data.barangMasuk.stok_masuk;
+        //             let keterangan = data.barangMasuk.keterangan;
+
+        //             let namaBarangOptions = '';
+        //             data.katalogBarang.forEach(function(barang) {
+        //                 namaBarangOptions +=
+        //                     `<option value="${barang.id}" ${barang.id == selectedBarangId ? 'selected' : ''}>${barang.nama_barang}</option>`;
+        //             });
+
+        //             // Menampilkan SweetAlert dengan form edit
+        //             swal({
+        //                 title: `Edit Data Barang Masuk`,
+        //                 content: {
+        //                     element: "div",
+        //                     attributes: {
+        //                         innerHTML: `
+    //                     <div class="form-group">
+    //                         <label for="nama-barang">Nama Barang</label>
+    //                         <select class="form-control" id="nama-barang" name="katalog_barang_id">
+    //                         ${namaBarangOptions}
+    //                         </select>
+    //                     </div>
+    //                     <div class="form-group mt-2">
+    //                         <label for="stok-masuk">Stok Masuk</label>
+    //                         <input min="1" type="number" class="form-control" id="stok-masuk" value="${stokMasuk}" placeholder="Jumlah Stok Masuk" name="stok_masuk">
+    //                     </div>
+    //                     <div class="form-group mt-2">
+    //                         <label for="keterangan">Keterangan</label>
+    //                         <input type="text" class="form-control" id="keterangan" value="${keterangan}" placeholder="Keterangan" name="keterangan">
+    //                     </div>`
+        //                     }
+        //                 },
+        //                 buttons: {
+        //                     cancel: {
+        //                         visible: true,
+        //                         className: "btn btn-danger",
+        //                     },
+        //                     confirm: {
+        //                         text: "Simpan",
+        //                         className: "btn btn-success",
+        //                     },
+        //                 },
+        //             }).then(function(result) {
+        //                 if (result) {
+        //                     let katalogBarangId = $("#nama-barang").val();
+        //                     let stokMasuk = $("#stok-masuk").val();
+        //                     let keterangan = $("#keterangan").val();
+
+        //                     $.ajax({
+        //                         type: "POST",
+        //                         url: '{{ route('barang-masuk.update', ':id') }}'.replace(
+        //                             ':id', data.barangMasuk.id),
+        //                         data: {
+        //                             _method: "PUT",
+        //                             katalog_barang_id: katalogBarangId,
+        //                             stok_masuk: stokMasuk,
+        //                             keterangan: keterangan,
+        //                             _token: '{{ csrf_token() }}',
+        //                         },
+        //                         success: function(response) {
+        //                             swal("Sukses", "Data telah Diperbarui!", "success");
+        //                             setTimeout(function() {
+        //                                 location.reload();
+        //                             }, 2000);
+        //                         },
+        //                         error: function(xhr, status, error) {
+        //                             var errors = xhr.responseJSON.errors;
+        //                             var errorMessages = '';
+
+        //                             $.each(errors, function(key, messages) {
+        //                                 messages.forEach(function(message) {
+        //                                     errorMessages += message +
+        //                                         '<br>';
+        //                                 });
+        //                             });
+        //                             swal({
+        //                                 title: "Error!",
+        //                                 content: {
+        //                                     element: "div",
+        //                                     attributes: {
+        //                                         innerHTML: `<div>${errorMessages}</div>`
+        //                                     }
+        //                                 },
+        //                                 icon: "error",
+        //                             });
+        //                         }
+        //                     });
+        //                 }
+        //             });
+        //         } else {
+        //             swal("Error", "Data tidak ditemukan.", "error");
+        //         }
+        //     }).fail(function(xhr, status, error) {
+        //         console.error("Error fetching data: ", error);
+        //         swal("Error", "Gagal memuat data untuk edit.", "error");
+        //     });
+        // });
+
+        $(document).on('click', '#editBarangMasuk', function(e) {
+            e.preventDefault();
+
+            // Ambil URL dari tombol yang diklik
+            let url = $(this).attr('href');
+
+            // AJAX request ke URL untuk mendapatkan data barang masuk
+            $.get(url, function(data) {
+                let selectedBarangId = data.barangMasuk.katalog_barang_id;
+                let stokMasuk = data.barangMasuk.stok_masuk;
+                let keterangan = data.barangMasuk.keterangan;
+
+                let namaBarangOptions = '';
+                data.katalogBarang.forEach(function(barang) {
+                    namaBarangOptions +=
+                        `<option value="${barang.id}" ${barang.id == selectedBarangId ? 'selected' : ''}>${barang.nama_barang}</option>`;
+                });
+
+                swal({
+                    title: `Edit Data Barang Masuk`,
+                    content: {
+                        element: "div",
+                        attributes: {
+                            innerHTML: `
                         <div class="form-group">
                             <label for="nama-barang">Nama Barang</label>
                             <select class="form-control" id="nama-barang" name="katalog_barang_id">
-                                ${selectOptions}
+                            ${namaBarangOptions}
                             </select>
                         </div>
                         <div class="form-group mt-2">
                             <label for="stok-masuk">Stok Masuk</label>
-                            <input type="number" class="form-control" id="stok-masuk" value="${barangMasuk.stok_masuk}" placeholder="Jumlah Stok Masuk" name="stok_masuk">
+                            <input min="1" type="number" class="form-control" id="stok-masuk" value="${stokMasuk}" placeholder="Jumlah Stok Masuk" name="stok_masuk">
                         </div>
                         <div class="form-group mt-2">
                             <label for="keterangan">Keterangan</label>
-                            <input type="text" class="form-control" id="keterangan" value="${barangMasuk.keterangan}" placeholder="Keterangan" name="keterangan">
-                        </div>
-                        `
+                            <input type="text" class="form-control" id="keterangan" value="${keterangan}" placeholder="Keterangan" name="keterangan">
+                        </div>`
+                        }
+                    },
+                    buttons: {
+                        cancel: {
+                            visible: true,
+                            className: "btn btn-danger",
+                        },
+                        confirm: {
+                            text: "Simpan",
+                            className: "btn btn-success",
+                        },
+                    },
+                }).then(function(result) {
+                    if (result) {
+                        let katalogBarangId = $("#nama-barang").val();
+                        let stokMasuk = $("#stok-masuk").val();
+                        let keterangan = $("#keterangan").val();
+
+                        $.ajax({
+                            type: "POST",
+                            url: '{{ route('barang-masuk.update', ':id') }}'.replace(':id',
+                                data.barangMasuk.id),
+                            data: {
+                                _method: "PUT",
+                                katalog_barang_id: katalogBarangId, // ID barang dari katalog
+                                stok_masuk: stokMasuk,
+                                keterangan: keterangan,
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(response) {
+                                swal("Sukses", "Data telah Diperbarui!", "success");
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
+                            },
+                            error: function(xhr, status, error) {
+                                var errors = xhr.responseJSON.errors;
+                                var errorMessages = '';
+
+                                $.each(errors, function(key, messages) {
+                                    messages.forEach(function(message) {
+                                        errorMessages += message +
+                                            '<br>';
+                                    });
+                                });
+                                swal({
+                                    title: "Error!",
+                                    content: {
+                                        element: "div",
+                                        attributes: {
+                                            innerHTML: `<div>${errorMessages}</div>`
+                                        }
+                                    },
+                                    icon: "error",
+                                });
                             }
+                        });
+                    }
+                });
+            }).fail(function(xhr, status, error) {
+                console.error("Error fetching data: ", error);
+                swal("Error", "Gagal memuat data untuk edit.", "error");
+            });
+        });
+
+
+
+
+        // Hapus data barang masuk
+        $("#deleteBarangMasuk").click(function(e) {
+            e.preventDefault();
+
+            // Ambil URL dari form yang ingin dihapus
+            let formAction = $(this).closest('form').attr('action');
+
+            swal({
+                title: "Yakin untuk menghapus data barang masuk?",
+                text: "Setelah di hapus data tidak bisa kembali!",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        visible: true,
+                        text: "Batal!",
+                        className: "btn btn-danger",
+                    },
+                    confirm: {
+                        text: "Ya, Hapus!",
+                        className: "btn btn-success",
+                    },
+                },
+            }).then((willDelete) => {
+                if (willDelete) {
+                    // Mengirimkan request DELETE dengan AJAX
+                    $.ajax({
+                        type: "POST",
+                        url: formAction,
+                        data: {
+                            _method: "DELETE",
+                            _token: $('meta[name="csrf-token"]').attr(
+                                'content') // Ambil CSRF token dari meta tag
                         },
-                        buttons: {
-                            cancel: {
-                                visible: true,
-                                className: "btn btn-danger",
-                            },
-                            confirm: {
-                                text: "Simpan",
-                                className: "btn btn-success",
-                            },
+                        success: function(response) {
+                            swal("Data Berhasil dihapus!", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        className: "btn btn-success",
+                                    },
+                                },
+                            });
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
                         },
-                    }).then(function(result) {
-                        if (result) {
-                            let katalogBarangId = $("#nama-barang").val();
-                            let stokMasuk = $("#stok-masuk").val();
-                            let keterangan = $("#keterangan").val();
-
-                            // Mengirim data ke server pake AJAX
-                            $.ajax({
-                                type: 'PUT',
-                                url: '/barang-masuk/' + id,
-                                data: {
-                                    katalog_barang_id: katalogBarangId,
-                                    stok_masuk: stokMasuk,
-                                    keterangan: keterangan,
-                                    _token: '{{ csrf_token() }}'
-                                },
-                                success: function(response) {
-                                    swal("Sukses!", "Data telah diubah!",
-                                        "success");
-                                    // nunggu 2 detik setelah berhasil update data
-                                    setTimeout(function() {
-                                        location.reload();
-                                    }, 2000);
-                                },
-                                error: function(xhr, status, error) {
-                                    var errors = xhr.responseJSON.errors;
-                                    var errorMessages = '';
-
-                                    // Gabungkan semua pesan error
-                                    $.each(errors, function(key, messages) {
-                                        messages.forEach(function(message) {
-                                            errorMessages +=
-                                                message + '<br>';
-                                        });
-                                    });
-
-                                    // Tampilkan pesan error dengan SweetAlert
-                                    swal({
-                                        title: "Error!",
-                                        content: {
-                                            element: "div",
-                                            attributes: {
-                                                innerHTML: `<div>${errorMessages}</div>`
-                                            }
-                                        },
-                                        icon: "error"
-                                    });
-                                }
+                        error: function(xhr) {
+                            console.error(xhr
+                                .responseText);
+                            swal({
+                                title: "Gagal",
+                                text: "Terjadi kesalahan saat menghapus data!",
+                                icon: "error",
                             });
                         }
                     });
-                },
-                error: function(xhr, status, error) {
-                    swal("Error!", "Terjadi kesalahan saat mengambil data!", "error");
+                } else {
+                    swal("Data tidak dihapus!", {
+                        icon: "info",
+                        buttons: {
+                            confirm: {
+                                className: "btn btn-success",
+                            },
+                        },
+                    });
                 }
             });
         });
