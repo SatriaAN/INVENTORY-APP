@@ -40,6 +40,7 @@
                                     <th>Keterangan</th>
                                     <th>Tanggal Dibuat</th>
                                     <th>Tanggal Diupadte</th>
+                                    <th>Edit</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -50,6 +51,7 @@
                                     <th>Keterangan</th>
                                     <th>Tanggal Dibuat</th>
                                     <th>Tanggal Diupadte</th>
+                                    <th>Edit</th>
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -61,6 +63,11 @@
                                         <td>{{ $data->keterangan }}</td>
                                         <td>{{ $data->created_at }}</td>
                                         <td>{{ $data->updated_at }}</td>
+                                        <td>
+                                            <a href="{{ route('barang-masuk.edit', $data->id) }}"
+                                                class="btn btn-warning mx-1" id="editBarangMasuk">
+                                                <i class="icon-pencil"></i></a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -151,6 +158,111 @@
                         }
                     });
                 }
+            });
+        });
+
+        // Edit data
+        // edit data barang masuk
+        $(document).on('click', '#editBarangMasuk', function(e) {
+            e.preventDefault();
+
+            // Ambil URL dari tombol yang diklik
+            let url = $(this).attr('href');
+
+            // AJAX request ke URL untuk mendapatkan data barang masuk
+            $.get(url, function(data) {
+                let selectedBarangId = data.barangMasuk.katalog_barang_id;
+                let stokMasuk = data.barangMasuk.stok_masuk;
+                let keterangan = data.barangMasuk.keterangan;
+
+                let namaBarangOptions = '';
+                data.katalogBarang.forEach(function(barang) {
+                    namaBarangOptions +=
+                        `<option value="${barang.id}" ${barang.id == selectedBarangId ? 'selected' : ''}>${barang.nama_barang}</option>`;
+                });
+
+                swal({
+                    title: `Edit Data Barang Masuk`,
+                    content: {
+                        element: "div",
+                        attributes: {
+                            innerHTML: `
+                        <div class="form-group">
+                            <label for="nama-barang">Nama Barang</label>
+                            <select class="form-control" id="nama-barang" name="katalog_barang_id">
+                            ${namaBarangOptions}
+                            </select>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="stok-masuk">Stok Masuk</label>
+                            <input min="1" type="number" class="form-control" id="stok-masuk" value="${stokMasuk}" placeholder="Jumlah Stok Masuk" name="stok_masuk">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="keterangan">Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan" value="${keterangan}" placeholder="Keterangan" name="keterangan">
+                        </div>`
+                        }
+                    },
+                    buttons: {
+                        cancel: {
+                            visible: true,
+                            className: "btn btn-danger",
+                        },
+                        confirm: {
+                            text: "Simpan",
+                            className: "btn btn-success",
+                        },
+                    },
+                }).then(function(result) {
+                    if (result) {
+                        let katalogBarangId = $("#nama-barang").val();
+                        let stokMasuk = $("#stok-masuk").val();
+                        let keterangan = $("#keterangan").val();
+
+                        $.ajax({
+                            type: "POST",
+                            url: '{{ route('barang-masuk.update', ':id') }}'.replace(':id',
+                                data.barangMasuk.id),
+                            data: {
+                                _method: "PUT",
+                                katalog_barang_id: katalogBarangId, // ID barang dari katalog
+                                stok_masuk: stokMasuk,
+                                keterangan: keterangan,
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(response) {
+                                swal("Sukses", "Data telah Diperbarui!", "success");
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
+                            },
+                            error: function(xhr, status, error) {
+                                var errors = xhr.responseJSON.errors;
+                                var errorMessages = '';
+
+                                $.each(errors, function(key, messages) {
+                                    messages.forEach(function(message) {
+                                        errorMessages += message +
+                                            '<br>';
+                                    });
+                                });
+                                swal({
+                                    title: "Error!",
+                                    content: {
+                                        element: "div",
+                                        attributes: {
+                                            innerHTML: `<div>${errorMessages}</div>`
+                                        }
+                                    },
+                                    icon: "error",
+                                });
+                            }
+                        });
+                    }
+                });
+            }).fail(function(xhr, status, error) {
+                console.error("Error fetching data: ", error);
+                swal("Error", "Gagal memuat data untuk edit.", "error");
             });
         });
     </script>

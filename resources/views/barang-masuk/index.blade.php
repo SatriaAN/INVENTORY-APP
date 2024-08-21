@@ -395,9 +395,6 @@
             });
         });
 
-
-
-
         // Hapus data barang masuk
         $(".deleteBarangMasuk").click(function(e) {
             e.preventDefault();
