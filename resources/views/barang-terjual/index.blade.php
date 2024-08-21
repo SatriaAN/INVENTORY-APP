@@ -64,7 +64,7 @@
                         <h4 class="card-title">Raw Tabel Barang Terjual</h4>
                     </div>
                     <div>
-                        <a href="#" class="btn btn-label-info btn-round btn-md" type="button" id="alert_demo_5">
+                        <a href="#" class="btn btn-label-info btn-round btn-md" type="button" id="insertBarangTerjual">
                             <i class="fa fa-plus">&nbsp;</i>
                             Tambah Barang Terjual
                         </a>
@@ -105,8 +105,7 @@
                                             <form id="deleteForm" action="{{ route('barang-terjual.destroy', $data->id) }}">
                                                 @csrf
                                                 @method('DELETE')
-                                                {{-- <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a> --}}
-                                                <button type="submit" class="btn btn-danger mx-1" id="deleteBarangTerjual">
+                                                <button type="submit" class="btn btn-danger mx-1 deleteBarangTerjual">
                                                     <i class="icon-trash"></i>
                                                 </button>
                                             </form>
@@ -191,7 +190,7 @@
         });
     </script>
     <script>
-        $("#alert_demo_5").click(function(e) {
+        $("#insertBarangTerjual").click(function(e) {
             var katalogBarang = @json($katalogBarang);
             var selectOptions = '';
             katalogBarang.forEach(function(barang) {
@@ -380,7 +379,7 @@
         });
     </script>
     <script>
-        $("#deleteBarangTerjual").click(function(e) {
+        $(".deleteBarangTerjual").click(function(e) {
             e.preventDefault();
 
             let formAction = $(this).closest('form').attr('action');
@@ -396,7 +395,7 @@
                         className: "btn btn-danger",
                     },
                     confirm: {
-                        text: "Ya, Hapus!",
+                        text: "Ya, Hapus.",
                         className: "btn btn-success",
                     },
                 },
