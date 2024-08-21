@@ -16,7 +16,7 @@ class BarangMasukController extends Controller
      */
     public function index()
     {
-        $barangMasuk = BarangMasuk::with('katalogBarang')->get();
+        $barangMasuk = BarangMasuk::with('katalogBarang')->orderBy('created_at','desc')->get();
         $katalogBarang = Katalogbarang::all();
         $barangMasukGroupBy = BarangMasuk::getBarangMasukByGroup();
 
