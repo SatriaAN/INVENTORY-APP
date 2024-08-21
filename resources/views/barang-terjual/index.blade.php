@@ -12,14 +12,14 @@
                         <div class="card-header">
                             <h4 class="card-title">Tabel Barang Terjual by Kategori</h4>
                         </div>
-                        <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                        <div class="card-body" style="max-height: 335px; overflow-y: auto;">
                             <div class="table-responsive">
                                 <table id="multi-filter-select" class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th>NO</th>
-                                            <th>Nama Barang</th>
-                                            <th>Stok Masuk</th>
+                                            <th style="width: 28%;">Nama Barang</th>
+                                            <th style="width: 10%;">Terjual</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -31,8 +31,8 @@
                                                 <td> {{ $data->total_jumlah_terjual }}</td>
                                                 <td>
                                                     <a href="{{ route('barang-terjual.detail', $data->katalog_barang_id) }}"
-                                                        class="btn btn-info mx-1" style="font-size: 16px;">
-                                                        <i class="icon-eye" style="font-size: 16px;"></i> Detail Data
+                                                        class="btn btn-info mx-1" style="font-size: 1rem;">
+                                                        <i class="icon-eye" style="font-size: 1rem;"></i> Detail Data
                                                     </a>
                                                 </td>
                                             </tr>
@@ -64,7 +64,8 @@
                         <h4 class="card-title">Raw Tabel Barang Terjual</h4>
                     </div>
                     <div>
-                        <a href="#" class="btn btn-label-info btn-round btn-md" type="button" id="insertBarangTerjual">
+                        <a href="#" class="btn btn-label-info btn-round btn-md" type="button"
+                            id="insertBarangTerjual">
                             <i class="fa fa-plus">&nbsp;</i>
                             Tambah Barang Terjual
                         </a>
@@ -143,7 +144,7 @@
                     "Dec",
                 ],
                 datasets: [{
-                    label: "Active Users",
+                    label: "Barang Terjual",
                     borderColor: "#1d7af3",
                     pointBorderColor: "#FFF",
                     pointBackgroundColor: "#1d7af3",
@@ -154,10 +155,8 @@
                     backgroundColor: "transparent",
                     fill: true,
                     borderWidth: 2,
-                    data: [
-                        542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 900,
-                    ],
-                }, ],
+                    data: @json($chartData),
+                }],
             },
             options: {
                 responsive: true,

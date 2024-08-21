@@ -51,4 +51,12 @@ class BarangTerjual extends Model
             // ->get(['id', 'jumlah_terjual', 'created_at', 'updated_at']);
             ->get();
     }
+
+    public static function getBarangTerjualByMonth()
+    {
+        return self::select(DB::raw('MONTH(created_at) as month'), DB::raw('SUM(jumlah_terjual) as total'))
+        ->groupBy('month')
+        ->pluck('total', 'month')
+        ->toArray();
+    }
 }

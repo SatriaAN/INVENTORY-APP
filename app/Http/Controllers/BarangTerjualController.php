@@ -18,7 +18,14 @@ class BarangTerjualController extends Controller
         $katalogBarang = Katalogbarang::all();
         $barangTerjualGroupBy = BarangTerjual::getBarangTerjualByGroup();
 
-        return view('barang-terjual.index', compact('barangTerjual', 'barangTerjualGroupBy', 'katalogBarang'));
+        $barangTerjualByMonth =  BarangTerjual::getBarangTerjualByMonth();
+
+        $chartData = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $chartData[] = $barangTerjualByMonth[$i] ?? 0;
+        }
+
+        return view('barang-terjual.index', compact('barangTerjual', 'barangTerjualGroupBy', 'katalogBarang', 'chartData'));
     }
 
     public function create()
