@@ -44,11 +44,10 @@ class BarangTerjualController extends Controller
 
     public function showDetail($katalog_barang_id)
     {
-        $katalogBarang = Katalogbarang::all();
         $detailBarangTerjual = BarangTerjual::getDetailBarangTerjual($katalog_barang_id);
         $namaBarang = $detailBarangTerjual->first()->katalogBarang->nama_barang ?? 'Data Tidak Ditemukan';
 
-        return view('barang-terjual.detail', compact('detailBarangTerjual', 'namaBarang', 'katalogBarang', 'katalog_barang_id'));
+        return view('barang-terjual.detail', compact('detailBarangTerjual', 'namaBarang', 'katalog_barang_id'));
     }
 
 
@@ -90,7 +89,5 @@ class BarangTerjualController extends Controller
     public function destroy($id)
     {
         BarangTerjual::where('id', $id)->delete();
-
-        return redirect()->route('culture.index')->with('success', 'Culture Berhasil Di Hapus');
     }
 }

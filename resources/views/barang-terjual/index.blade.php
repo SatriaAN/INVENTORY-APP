@@ -102,10 +102,13 @@
                                             <a href="{{ route('barang-terjual.edit', $data->id) }}"
                                                 class="btn btn-warning mx-1" id="modalEditBarangTerjual">
                                                 <i class="icon-pencil"></i></a>
-                                            <form action="POST" class="d-flex">
+                                            <form id="deleteForm" action="{{ route('barang-terjual.destroy', $data->id) }}">
+                                                @csrf
+                                                @method('DELETE')
                                                 {{-- <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a> --}}
-                                                <button type="submit" class="btn btn-danger mx-1"><i
-                                                        class="icon-trash"></i></button>
+                                                <button type="submit" class="btn btn-danger mx-1" id="deleteBarangTerjual">
+                                                    <i class="icon-trash"></i>
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
@@ -373,6 +376,74 @@
                         });
                     }
                 });
+            });
+        });
+    </script>
+    <script>
+        $("#deleteBarangTerjual").click(function(e) {
+            e.preventDefault();
+
+            let formAction = $(this).closest('form').attr('action');
+
+            swal({
+                title: "Yakin untuk menghapus data barang terjual ini?",
+                text: "Setelah di hapus data tidak bisa kembali!",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        visible: true,
+                        text: "Batal",
+                        className: "btn btn-danger",
+                    },
+                    confirm: {
+                        text: "Ya, Hapus!",
+                        className: "btn btn-success",
+                    },
+                },
+            }).then((willDelete) => {
+                if (willDelete) {
+                    // Mengirimkan request DELETE dengan AJAX
+                    $.ajax({
+                        type: "POST",
+                        url: formAction,
+                        data: {
+                            _method: "DELETE",
+                            _token: $('meta[name="csrf-token"]').attr(
+                                'content') // Ambil CSRF token dari meta tag
+                        },
+                        success: function(response) {
+                            swal("Data Berhasil dihapus!", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        className: "btn btn-success",
+                                    },
+                                },
+                            });
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        },
+                        error: function(xhr) {
+                            console.error(xhr
+                                .responseText);
+                            swal({
+                                title: "Gagal",
+                                text: "Terjadi kesalahan saat menghapus data!",
+                                icon: "error",
+                            });
+                        }
+                    });
+                } else {
+                    swal("Data tidak dihapus!", {
+                        icon: "info",
+                        buttons: {
+                            confirm: {
+                                className: "btn btn-success",
+                            },
+                        },
+                    });
+                }
             });
         });
     </script>
