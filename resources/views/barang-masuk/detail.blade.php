@@ -175,23 +175,18 @@
                 let stokMasuk = data.barangMasuk.stok_masuk;
                 let keterangan = data.barangMasuk.keterangan;
 
-                let namaBarangOptions = '';
-                data.katalogBarang.forEach(function(barang) {
-                    namaBarangOptions +=
-                        `<option value="${barang.id}" ${barang.id == selectedBarangId ? 'selected' : ''}>${barang.nama_barang}</option>`;
-                });
+                let selectedNamaBarang = "{{ $namaBarang }}";
 
                 swal({
-                    title: `Edit Data Barang Masuk`,
+                    title: `Edit Data ${selectedNamaBarang} Masuk`,
                     content: {
                         element: "div",
                         attributes: {
                             innerHTML: `
                         <div class="form-group">
                             <label for="nama-barang">Nama Barang</label>
-                            <select class="form-control" id="nama-barang" name="katalog_barang_id">
-                            ${namaBarangOptions}
-                            </select>
+                            <input class="form-control" id="nama-barang" value="${selectedNamaBarang}" readonly>
+                            <input type="hidden" id="katalog-barang-id" value="${selectedBarangId}">
                         </div>
                         <div class="form-group mt-2">
                             <label for="stok-masuk">Stok Masuk</label>
@@ -215,7 +210,7 @@
                     },
                 }).then(function(result) {
                     if (result) {
-                        let katalogBarangId = $("#nama-barang").val();
+                        let katalogBarangId = $("#katalog-barang-id").val();
                         let stokMasuk = $("#stok-masuk").val();
                         let keterangan = $("#keterangan").val();
 
