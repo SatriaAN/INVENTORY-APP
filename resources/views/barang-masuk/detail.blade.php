@@ -260,5 +260,47 @@
                 swal("Error", "Gagal memuat data untuk edit.", "error");
             });
         });
+
+        // filter table
+        $(document).ready(function() {
+            var table = $("#multi-filter-select").DataTable({
+                pageLength: 7,
+                columnDefs: [{
+                    targets: 2,
+                    type: 'num',
+                    render: function(data, type, row) {
+                        var num = parseInt(data.split(' - ')[0], 10);
+                        if (type === 'sort' || type === 'type') {
+                            return num;
+                        }
+                        return num + ' - STOK';
+                    }
+                }],
+                initComplete: function() {
+                    this.api().columns([1, 2, 3]).every(function() {
+                        var column = this;
+                        var select = $(
+                                '<select class="form-select"><option value=""></option></select>'
+                            )
+                            .appendTo($(column.footer()).empty())
+                            .on("change", function() {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                column.search(val ? "^" + val + "$" : "", true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function(d, j) {
+                            var cleanedValue = d.split(' - ')[0] + ' - STOK';
+                            select.append('<option value="' + cleanedValue + '">' +
+                                cleanedValue + "</option>");
+                        });
+                    });
+                },
+            });
+
+            $('#multi-filter-select_filter input').on('keyup change', function() {
+                table.draw();
+            });
+        });
     </script>
 @endsection
