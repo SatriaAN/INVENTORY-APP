@@ -10,7 +10,8 @@
                 <div class="card-header d-flex justify-content-between">
                     <div>
                         <h4 class="card-title">Tabel
-                            {{ !empty($namaBarang) ? $namaBarang . ' Terjual' : $namaBarang . 'Kosong' }}</h4>
+                            {{ !empty($namaBarang) ? $namaBarang . ' Terjual' : $namaBarang . 'Kosong' }}
+                        </h4>
                     </div>
                     <div class="mx-3">
                         <a href="{{ route('barang-terjual.index') }}" class="btn btn-label-warning btn-round btn-md">
