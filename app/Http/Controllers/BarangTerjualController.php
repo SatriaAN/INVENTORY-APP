@@ -18,7 +18,14 @@ class BarangTerjualController extends Controller
         $katalogBarang = Katalogbarang::all();
         $barangTerjualGroupBy = BarangTerjual::getBarangTerjualByGroup();
 
-        return view('barang-terjual.index', compact('barangTerjual', 'barangTerjualGroupBy', 'katalogBarang'));
+        $barangTerjualByMonth =  BarangTerjual::getBarangTerjualByMonth();
+
+        $chartData = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $chartData[] = $barangTerjualByMonth[$i] ?? 0;
+        }
+
+        return view('barang-terjual.index', compact('barangTerjual', 'barangTerjualGroupBy', 'katalogBarang', 'chartData'));
     }
 
     public function create()
@@ -44,11 +51,10 @@ class BarangTerjualController extends Controller
 
     public function showDetail($katalog_barang_id)
     {
-        $katalogBarang = Katalogbarang::all();
         $detailBarangTerjual = BarangTerjual::getDetailBarangTerjual($katalog_barang_id);
         $namaBarang = $detailBarangTerjual->first()->katalogBarang->nama_barang ?? 'Data Tidak Ditemukan';
 
-        return view('barang-terjual.detail', compact('detailBarangTerjual', 'namaBarang', 'katalogBarang', 'katalog_barang_id'));
+        return view('barang-terjual.detail', compact('detailBarangTerjual', 'namaBarang', 'katalog_barang_id'));
     }
 
 
@@ -90,7 +96,5 @@ class BarangTerjualController extends Controller
     public function destroy($id)
     {
         BarangTerjual::where('id', $id)->delete();
-
-        return redirect()->route('culture.index')->with('success', 'Culture Berhasil Di Hapus');
     }
 }

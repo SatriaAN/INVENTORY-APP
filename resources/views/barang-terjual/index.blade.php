@@ -12,14 +12,14 @@
                         <div class="card-header">
                             <h4 class="card-title">Tabel Barang Terjual by Kategori</h4>
                         </div>
-                        <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                        <div class="card-body" style="max-height: 335px; overflow-y: auto;">
                             <div class="table-responsive">
                                 <table id="multi-filter-select" class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th>NO</th>
-                                            <th>Nama Barang</th>
-                                            <th>Stok Masuk</th>
+                                            <th style="width: 28%;">Nama Barang</th>
+                                            <th style="width: 10%;">Terjual</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -31,8 +31,8 @@
                                                 <td> {{ $data->total_jumlah_terjual }}</td>
                                                 <td>
                                                     <a href="{{ route('barang-terjual.detail', $data->katalog_barang_id) }}"
-                                                        class="btn btn-info mx-1" style="font-size: 16px;">
-                                                        <i class="icon-eye" style="font-size: 16px;"></i> Detail Data
+                                                        class="btn btn-info mx-1" style="font-size: 1rem;">
+                                                        <i class="icon-eye" style="font-size: 1rem;"></i> Detail Data
                                                     </a>
                                                 </td>
                                             </tr>
@@ -64,7 +64,8 @@
                         <h4 class="card-title">Raw Tabel Barang Terjual</h4>
                     </div>
                     <div>
-                        <a href="#" class="btn btn-label-info btn-round btn-md" type="button" id="alert_demo_5">
+                        <a href="#" class="btn btn-label-info btn-round btn-md" type="button"
+                            id="insertBarangTerjual">
                             <i class="fa fa-plus">&nbsp;</i>
                             Tambah Barang Terjual
                         </a>
@@ -102,10 +103,12 @@
                                             <a href="{{ route('barang-terjual.edit', $data->id) }}"
                                                 class="btn btn-warning mx-1" id="modalEditBarangTerjual">
                                                 <i class="icon-pencil"></i></a>
-                                            <form action="POST" class="d-flex">
-                                                {{-- <a href="" class="btn btn-info mx-1"><i class="icon-eye"></i></a> --}}
-                                                <button type="submit" class="btn btn-danger mx-1"><i
-                                                        class="icon-trash"></i></button>
+                                            <form id="deleteForm" action="{{ route('barang-terjual.destroy', $data->id) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger mx-1 deleteBarangTerjual">
+                                                    <i class="icon-trash"></i>
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
@@ -141,7 +144,7 @@
                     "Dec",
                 ],
                 datasets: [{
-                    label: "Active Users",
+                    label: "Barang Terjual",
                     borderColor: "#1d7af3",
                     pointBorderColor: "#FFF",
                     pointBackgroundColor: "#1d7af3",
@@ -152,10 +155,8 @@
                     backgroundColor: "transparent",
                     fill: true,
                     borderWidth: 2,
-                    data: [
-                        542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 900,
-                    ],
-                }, ],
+                    data: @json($chartData),
+                }],
             },
             options: {
                 responsive: true,
@@ -188,7 +189,7 @@
         });
     </script>
     <script>
-        $("#alert_demo_5").click(function(e) {
+        $("#insertBarangTerjual").click(function(e) {
             var katalogBarang = @json($katalogBarang);
             var selectOptions = '';
             katalogBarang.forEach(function(barang) {
@@ -373,6 +374,74 @@
                         });
                     }
                 });
+            });
+        });
+    </script>
+    <script>
+        $(".deleteBarangTerjual").click(function(e) {
+            e.preventDefault();
+
+            let formAction = $(this).closest('form').attr('action');
+
+            swal({
+                title: "Yakin untuk menghapus data barang terjual ini?",
+                text: "Setelah di hapus data tidak bisa kembali!",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        visible: true,
+                        text: "Batal",
+                        className: "btn btn-danger",
+                    },
+                    confirm: {
+                        text: "Ya, Hapus.",
+                        className: "btn btn-success",
+                    },
+                },
+            }).then((willDelete) => {
+                if (willDelete) {
+                    // Mengirimkan request DELETE dengan AJAX
+                    $.ajax({
+                        type: "POST",
+                        url: formAction,
+                        data: {
+                            _method: "DELETE",
+                            _token: $('meta[name="csrf-token"]').attr(
+                                'content') // Ambil CSRF token dari meta tag
+                        },
+                        success: function(response) {
+                            swal("Data Berhasil dihapus!", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        className: "btn btn-success",
+                                    },
+                                },
+                            });
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        },
+                        error: function(xhr) {
+                            console.error(xhr
+                                .responseText);
+                            swal({
+                                title: "Gagal",
+                                text: "Terjadi kesalahan saat menghapus data!",
+                                icon: "error",
+                            });
+                        }
+                    });
+                } else {
+                    swal("Data tidak dihapus!", {
+                        icon: "info",
+                        buttons: {
+                            confirm: {
+                                className: "btn btn-success",
+                            },
+                        },
+                    });
+                }
             });
         });
     </script>

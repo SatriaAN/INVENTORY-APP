@@ -12,14 +12,14 @@
                         <div class="card-header">
                             <h4 class="card-title">Tabel Barang Masuk by Kategori</h4>
                         </div>
-                        <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                        <div class="card-body" style="max-height: 335px; overflow-y: auto;">
                             <div class="table-responsive">
                                 <table id="multi-filter-select" class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th>NO</th>
-                                            <th>Nama Barang</th>
-                                            <th>Stok Masuk</th>
+                                            <th style="width: 28%;">Nama Barang</th>
+                                            <th style="width: 10%;">Masuk</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -31,8 +31,8 @@
                                                 <td>{{ $data->stok_masuk }}</td>
                                                 <td>
                                                     <a href="{{ route('barang-masuk.detail', $data->katalog_barang_id) }}"
-                                                        class="btn btn-info mx-1" style="font-size: 16px;">
-                                                        <i class="icon-eye" style="font-size: 16px;"></i> Detail Data
+                                                        class="btn btn-info mx-1" style="font-size: 1rem">
+                                                        <i class="icon-eye" style="font-size: 1rem"></i> Detail Data
                                                     </a>
                                                 </td>
                                             </tr>
@@ -149,7 +149,7 @@
                     "Dec",
                 ],
                 datasets: [{
-                    label: "Active Users",
+                    label: "Barang Masuk",
                     borderColor: "#1d7af3",
                     pointBorderColor: "#FFF",
                     pointBackgroundColor: "#1d7af3",
