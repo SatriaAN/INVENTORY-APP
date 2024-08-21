@@ -20,14 +20,20 @@ class BarangMasukController extends Controller
         $katalogBarang = Katalogbarang::all();
         $barangMasukGroupBy = BarangMasuk::getBarangMasukByGroup();
 
-        // Logic Query Bisa dari controller atau model, contoh dari controller
+        $barangMasukByMonth = DB::table('barang_masuk')
+        ->select(DB::raw('MONTH(created_at) as month'), DB::raw('SUM(stok_masuk) as total'))
+        ->groupBy('month')
+        ->pluck('total', 'month')
+        ->toArray();
 
-        // $barangMasukGroupBy = BarangMasuk::select('katalog_barang_id', DB::raw('SUM(stok_masuk) as total_stok_masuk'))
-        //     ->groupBy('katalog_barang_id')
-        //     ->with('katalogBarang')
-        //     ->get();
+        $chartData = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $chartData[] = $barangMasukByMonth[$i] ?? 0;
+        }
 
-        return view('barang-masuk.index', compact('barangMasuk', 'barangMasukGroupBy', 'katalogBarang'));
+
+
+        return view('barang-masuk.index', compact('barangMasuk', 'barangMasukGroupBy', 'katalogBarang','chartData'));
     }
 
     /**
@@ -71,7 +77,6 @@ class BarangMasukController extends Controller
         //
         $detailBarangMasuk = BarangMasuk::getDetailBarangMasuk($katalog_barang_id);
         $namaBarang = $detailBarangMasuk->first()->katalogBarang->nama_barang;
-
 
         return view('barang-masuk.detail', compact('detailBarangMasuk', 'namaBarang','katalog_barang_id'));
     }
