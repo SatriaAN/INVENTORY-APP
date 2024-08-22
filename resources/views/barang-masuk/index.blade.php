@@ -465,44 +465,80 @@
         });
 
         $(document).ready(function() {
-            var table = $("#multi-filter-select").DataTable({
+            $("#multi-filter-select").DataTable({
                 pageLength: 7,
-                columnDefs: [{
-                    targets: 2, // Kolom "Stok Masuk" yang ada pada indeks ke-2
-                    type: 'num',
-                    render: function(data, type, row) {
-                        var num = parseInt(data.split(' - ')[0], 10);
-                        if (type === 'sort' || type === 'type') {
-                            return num;
-                        }
-                        return num + ' - STOK';
-                    }
-                }],
                 initComplete: function() {
-                    this.api().columns([1, 2, 3]).every(function() {
+                    this.api().columns().every(function(index) {
                         var column = this;
                         var select = $(
                                 '<select class="form-select"><option value=""></option></select>'
-                                )
+                            )
                             .appendTo($(column.footer()).empty())
                             .on("change", function() {
                                 var val = $.fn.dataTable.util.escapeRegex($(this).val());
                                 column.search(val ? "^" + val + "$" : "", true, false)
-                                .draw();
+                                    .draw();
                             });
 
                         column.data().unique().sort().each(function(d, j) {
-                            var cleanedValue = d.split(' - ')[0] + ' - STOK';
-                            select.append('<option value="' + cleanedValue + '">' +
-                                cleanedValue + "</option>");
+                            var optionValue = d;
+
+                            select.append('<option value="' + d + '">' + optionValue +
+                                '</option>');
                         });
                     });
                 },
             });
-
-            $('#multi-filter-select_filter input').on('keyup change', function() {
-                table.draw();
-            });
         });
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     console.log('DOM fully loaded and parsed');
+        //     $(document).ready(function() {
+        //         console.log('Script is running'); // Periksa apakah skrip berjalan
+
+        //         $(".multi-filter-select").DataTable({
+        //             pageLength: 7,
+        //             initComplete: function() {
+        //                 console.log(
+        //                     'initComplete triggered'); // Periksa apakah initComplete berjalan
+        //                 this.api().columns().every(function(index) {
+        //                     console.log('Column Index:',
+        //                         index); // Periksa setiap kolom yang diolah
+
+        //                     var column = this;
+        //                     var select = $(
+        //                             '<select class="form-select"><option value=""></option></select>'
+        //                         )
+        //                         .appendTo($(column.footer()).empty())
+        //                         .on("change", function() {
+        //                             var val = $.fn.dataTable.util.escapeRegex($(
+        //                                 this).val());
+        //                             column.search(val ? "^" + val + "$" : "", true,
+        //                                     false)
+        //                                 .draw();
+        //                         });
+
+        //                     column.data().unique().sort().each(function(d, j) {
+        //                         console.log('Value:',
+        //                             d
+        //                         ); // Periksa nilai yang diproses untuk setiap kolom
+
+        //                         var optionValue = d;
+
+        //                         if (index ===
+        //                             2
+        //                         ) { // Ganti indeks sesuai dengan kolom yang benar
+        //                             optionValue += ' - STOK';
+        //                         }
+
+        //                         select.append('<option value="' + d + '">' +
+        //                             optionValue +
+        //                             '</option>');
+        //                     });
+        //                 });
+        //             },
+        //         });
+        //     });
+        // });
     </script>
 @endsection
