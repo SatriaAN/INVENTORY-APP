@@ -61,8 +61,8 @@
                                         <td>{{ $data->katalogBarang->nama_barang }}</td>
                                         <td>{{ $data->stok_masuk }}</td>
                                         <td>{{ $data->keterangan }}</td>
-                                        <td>{{ $data->created_at }}</td>
-                                        <td>{{ $data->updated_at }}</td>
+                                        <td>{{ $data->created_at->format('j F Y') }}</td>
+                                        <td>{{ $data->updated_at->format('j F Y') }}</td>
                                         <td>
                                             <a href="{{ route('barang-masuk.edit', $data->id) }}"
                                                 class="btn btn-warning mx-1" id="editBarangMasuk">
@@ -269,7 +269,7 @@
                     this.api().columns().every(function(index) {
                         var column = this;
 
-                        if ([1, 2, 3, 4, 5].includes(
+                        if ([ 2, 3, 4, 5].includes(
                                 index)) {
                             var select = $(
                                     '<select class="form-select"><option value=""></option></select>'
