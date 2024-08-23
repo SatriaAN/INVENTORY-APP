@@ -61,8 +61,8 @@
                                         <td>{{ $data->katalogBarang->nama_barang }}</td>
                                         <td>{{ $data->jumlah_terjual }}</td>
                                         <td>{{ $data->keterangan }}</td>
-                                        <td>{{ $data->created_at }}</td>
-                                        <td>{{ $data->updated_at }}</td>
+                                        <td>{{ $data->created_at->format('j F Y') }}</td>
+                                        <td>{{ $data->updated_at->format('j F Y') }}</td>
                                         <td>
                                             <a href="{{ route('barang-terjual.edit', $data->id) }}"
                                                 class="btn btn-warning mx-1" id="editBarangTerjual">
@@ -182,8 +182,8 @@
                             innerHTML: `
                         <div class="form-group">
                             <label for="nama-barang">Nama Barang</label>
-                           <input class="form-control" id="nama-barang" value="${selectedBarang}" readonly>
-                           <input type="hidden" id="katalog-barang-id" value="${selectedBarangId}">
+                            <input class="form-control" id="nama-barang" value="${selectedBarang}" readonly>
+                            <input type="hidden" id="katalog-barang-id" value="${selectedBarangId}">
                         </div>
                         <div class="form-group mt-2">
                             <label for="jumlah-terjual">Terjual</label>
@@ -266,20 +266,20 @@
                 initComplete: function() {
                     this.api().columns().every(function(index) {
                         var column = this;
-                        if ([1, 2, 3, 4, 5].includes(index)) {
+                        if ([ 2, 3, 4, 5].includes(index)) {
                             var select = $(
                                     '<select class="form-select"><option value=""></option></select>'
                                 )
                                 .appendTo($(column.footer()).empty())
                                 .on("change", function() {
                                     var val = $.fn.dataTable.util.escapeRegex($(this)
-                                .val());
+                                        .val());
                                     column.search(val ? "^" + val + "$" : "", true, false)
                                         .draw();
                                 });
                             column.data().unique().sort().each(function(d, j) {
                                 var optionValue = d;
-                                if (index ===2) {
+                                if (index === 2) {
                                     optionValue += ' - STOK';
                                 }
                                 // var cleanedValue = d.split(' - ')[0] + ' - STOK';
