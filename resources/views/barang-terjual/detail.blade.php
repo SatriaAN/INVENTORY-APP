@@ -213,7 +213,8 @@
 
                         $.ajax({
                             type: "POST",
-                            url: '{{ route('barang-terjual.update', ':id') }}'.replace(':id',
+                            url: '{{ route('barang-terjual.update', ':id') }}'.replace(
+                                ':id',
                                 data.barangTerjual.id),
                             data: {
                                 _method: "PUT",
@@ -257,5 +258,43 @@
                 swal("Error", "Gagal memuat data untuk edit.", "error");
             });
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#multi-filter-select").DataTable({
+                pageLength: 7,
+                initComplete: function() {
+                    this.api().columns().every(function(index) {
+                        var column = this;
+                        if ([1, 2, 3, 4, 5].includes(index)) {
+                            var select = $(
+                                    '<select class="form-select"><option value=""></option></select>'
+                                )
+                                .appendTo($(column.footer()).empty())
+                                .on("change", function() {
+                                    var val = $.fn.dataTable.util.escapeRegex($(this)
+                                .val());
+                                    column.search(val ? "^" + val + "$" : "", true, false)
+                                        .draw();
+                                });
+                            column.data().unique().sort().each(function(d, j) {
+                                var optionValue = d;
+                                if (index ===2) {
+                                    optionValue += ' - STOK';
+                                }
+                                // var cleanedValue = d.split(' - ')[0] + ' - STOK';
+                                select.append('<option value="' + d + '">' +
+                                    optionValue + "</option>");
+                            });
+
+                        }
+                    });
+                },
+            });
+
+            // $('#multi-filter-select_filter input').on('keyup change', function() {
+            //     table.draw();
+            // })
+        })
     </script>
 @endsection

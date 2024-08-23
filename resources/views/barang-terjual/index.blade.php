@@ -14,7 +14,7 @@
                         </div>
                         <div class="card-body" style="max-height: 335px; overflow-y: auto;">
                             <div class="table-responsive">
-                                <table id="multi-filter-select" class="display table table-striped table-hover">
+                                <table class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th>NO</th>
@@ -443,6 +443,59 @@
                     });
                 }
             });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#multi-filter-select").DataTable({
+                pageLength: 7,
+
+                //fitur sort berdasarkan kolom tertentu aja
+
+                // columnsDefsc: [{
+                //     targets: 2,
+                //     type: 'num',
+                //     render: function(data, type, row) {
+                //         var num = parseInt(data.split(' - ')[0], 10);
+                //         if (type === 'sort' || type === 'type') {
+                //             return num;
+                //         }
+                //         return num + ' - STOK';
+                //     }
+                // }],
+
+                initComplete: function() {
+                    this.api().columns([1, 2, 3]).every(function(index) {
+                        var column = this;
+                        if ([1, 2, 3].includes(index)) {
+                            var select = $(
+                                    '<select class="form-select"><option value=""></option></select>'
+                                )
+                                .appendTo($(column.footer()).empty())
+                                .on("change", function() {
+                                    var val = $.fn.dataTable.util.escapeRegex($(this)
+                                        .val());
+                                    column.search(val ? "^" + val + "$" : "", true, false)
+                                        .draw();
+                                });
+
+                            column.data().unique().sort().each(function(d, j) {
+                                var optionValue = d;
+                                if (index === 2) {
+                                    optionValue += '';
+                                }
+                                // var cleanedValue = d.split(' - ')[0] + ' - STOK';
+                                select.append('<option value="' + d + '">' +
+                                    optionValue + "</option>");
+                            });
+                        }
+                    });
+                },
+            });
+
+            // $('#multi-filter-select_filter input').on('keyup change', function() {
+            //     table.draw();
+            // });
         });
     </script>
 @endsection
